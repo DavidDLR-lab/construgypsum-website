@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /cotizacion.html
+
+Sitemap: https://www.construgypsum.com/sitemap.xml

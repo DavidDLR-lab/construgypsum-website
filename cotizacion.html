@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solicitar cotización | Construgypsum</title>
+  <meta name="description" content="Arma tu lista de materiales de construcción y recibe una cotización consolidada en menos de 24 horas laborables. Construgypsum, Cuenca.">
+  <link rel="canonical" href="https://www.construgypsum.com/cotizacion.html">
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="container">
+      <div>📞 <a href="tel:+593072884912">(07) 2 88 49 12</a> · <a href="https://wa.me/593996144904">WhatsApp 099 614 4904</a></div>
+      <div><strong>Lun–Vie</strong> 08h00–13h00 / 14h00–17h00 · Cuenca, Ecuador</div>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="index.html" aria-label="Construgypsum — inicio">
+        <span class="logo-main">CON<span>STRU</span>gypsum</span>
+        <span class="logo-tag">Materializa tus sueños y construye tus ideas…</span>
+      </a>
+      <nav class="main-nav" aria-label="Navegación principal">
+        <a href="index.html">Inicio</a>
+        <a href="productos.html">Productos</a>
+        <a href="nosotros.html">Nosotros</a>
+        <a href="proyectos.html">Proyectos</a>
+        <a href="contacto.html">Contacto</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="quote-link" href="cotizacion.html">Mi cotización <span class="quote-badge">0</span></a>
+        <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <p class="kicker">Cotización</p>
+      <h2>Tu lista de materiales</h2>
+      <p class="sub">Revisa las cantidades, completa tus datos y envía. Te respondemos con precios y disponibilidad en <strong>menos de 24 horas laborables</strong>.</p>
+
+      <div id="quote-items"></div>
+
+      <div id="quote-empty" class="empty-quote hidden">
+        <p style="font-size:40px;">🛒</p>
+        <p><strong>Tu lista está vacía.</strong></p>
+        <p>Explora el <a href="productos.html">catálogo</a> y usa el botón «+ Cotizar» en cada producto.</p>
+        <a class="btn btn-primary mt-3" href="productos.html">Ir al catálogo</a>
+      </div>
+
+      <div id="quote-form-block">
+        <div class="form-success" role="status">✔ ¡Cotización enviada! Un asesor te contactará en menos de 24 horas laborables. También puedes adelantar tu pedido por WhatsApp.</div>
+
+        <!-- LEAD → ODOO CRM
+             En producción este formulario crea un crm.lead vía el endpoint
+             configurado en assets/js/main.js (ODOO_LEAD_ENDPOINT).
+             Mapeo sugerido de campos → Odoo:
+               nombre         → contact_name
+               empresa        → partner_name
+               correo         → email_from
+               telefono       → phone
+               ciudad         → city
+               tipo_cliente   → tag / categoría
+               detalle_pedido → description
+               utm_*          → source_id / medium_id / campaign_id -->
+        <form id="quote-form" data-lead-form novalidate>
+          <h2 style="font-size:22px; margin-bottom:18px;">Datos para tu cotización</h2>
+          <div class="form-grid">
+            <div>
+              <label for="q-nombre">Nombre y apellido *</label>
+              <input id="q-nombre" name="nombre" type="text" required autocomplete="name">
+            </div>
+            <div>
+              <label for="q-empresa">Empresa / Ferretería (opcional)</label>
+              <input id="q-empresa" name="empresa" type="text" autocomplete="organization">
+            </div>
+            <div>
+              <label for="q-correo">Correo electrónico *</label>
+              <input id="q-correo" name="correo" type="email" required autocomplete="email">
+            </div>
+            <div>
+              <label for="q-telefono">Teléfono / WhatsApp *</label>
+              <input id="q-telefono" name="telefono" type="tel" required autocomplete="tel">
+            </div>
+            <div>
+              <label for="q-ciudad">Ciudad *</label>
+              <input id="q-ciudad" name="ciudad" type="text" required>
+            </div>
+            <div>
+              <label for="q-tipo">Tipo de cliente *</label>
+              <select id="q-tipo" name="tipo_cliente" required>
+                <option value="">Selecciona…</option>
+                <option>Constructora</option>
+                <option>Ferretería / Distribuidor</option>
+                <option>Maestro de obra / Contratista</option>
+                <option>Cliente final</option>
+              </select>
+            </div>
+            <div class="full">
+              <label for="q-mensaje">Notas adicionales (medidas, plazos, lugar de entrega…)</label>
+              <textarea id="q-mensaje" name="mensaje"></textarea>
+            </div>
+          </div>
+          <input type="hidden" id="quote-payload" name="detalle_pedido">
+          <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign">
+          <input type="hidden" name="origen" value="web-cotizacion">
+          <p class="form-note mt-2">Al enviar aceptas nuestro <a href="privacidad.html">aviso de privacidad</a>. Usaremos tus datos solo para responder tu solicitud.</p>
+          <button class="btn btn-primary btn-block mt-2" type="submit">Enviar solicitud de cotización</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© 2026 Construgypsum Cía. Ltda. · <a href="index.html">Inicio</a> · <a href="contacto.html">Contacto</a> · <a href="privacidad.html">Privacidad</a></span>
+        <span>📞 (07) 2 88 49 12 · ✉️ ventas@construgypsum.com</span>
+      </div>
+    </div>
+  </footer>
+
+  <a class="wa-float" href="https://wa.me/593996144904?text=Hola%2C%20tengo%20una%20lista%20de%20materiales%20para%20cotizar" aria-label="Escribir por WhatsApp">💬 WhatsApp</a>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contacto | Construgypsum — Cuenca, Ecuador</title>
+  <meta name="description" content="Contáctanos: (07) 2 88 49 12, WhatsApp 099 614 4904, ventas@construgypsum.com. Nicanor Aguilar y Av. Solano, Cuenca. Respuesta en menos de 24 horas laborables.">
+  <link rel="canonical" href="https://www.construgypsum.com/contacto.html">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="container">
+      <div>📞 <a href="tel:+593072884912">(07) 2 88 49 12</a> · <a href="https://wa.me/593996144904">WhatsApp 099 614 4904</a></div>
+      <div><strong>Lun–Vie</strong> 08h00–13h00 / 14h00–17h00 · Cuenca, Ecuador</div>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="index.html" aria-label="Construgypsum — inicio">
+        <span class="logo-main">CON<span>STRU</span>gypsum</span>
+        <span class="logo-tag">Materializa tus sueños y construye tus ideas…</span>
+      </a>
+      <nav class="main-nav" aria-label="Navegación principal">
+        <a href="index.html">Inicio</a>
+        <a href="productos.html">Productos</a>
+        <a href="nosotros.html">Nosotros</a>
+        <a href="proyectos.html">Proyectos</a>
+        <a href="contacto.html" class="active">Contacto</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="quote-link" href="cotizacion.html">Mi cotización <span class="quote-badge">0</span></a>
+        <a class="btn btn-primary btn-sm" href="cotizacion.html">Cotizar ahora</a>
+        <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <p class="kicker">Contacto</p>
+      <h2>Hablemos de tu obra</h2>
+      <p class="sub">Respondemos toda consulta en menos de 24 horas laborables. Si es urgente, escríbenos directo por WhatsApp.</p>
+
+      <div class="grid grid-2" style="align-items:start;">
+        <div>
+          <div class="card mb-2"><div class="card-body">
+            <h3>📍 Visítanos</h3>
+            <p>Nicanor Aguilar y Av. Solano, sector Redondel del Estadio, Cuenca — Ecuador</p>
+            <p class="small">Lunes a viernes · 08h00–13h00 y 14h00–17h00</p>
+          </div></div>
+          <div class="card mb-2"><div class="card-body">
+            <h3>📞 Llámanos o escríbenos</h3>
+            <p>
+              Fijo: <a href="tel:+593072884912">(07) 2 88 49 12</a><br>
+              WhatsApp: <a href="https://wa.me/593996144904">099 614 4904</a><br>
+              Correo: <a href="mailto:ventas@construgypsum.com">ventas@construgypsum.com</a>
+            </p>
+          </div></div>
+          <div class="img-ph img-ph--wide">
+            <span class="ph-label">[Mapa: insertar iframe de Google Maps con la ubicación exacta del local]</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="form-success" role="status">✔ ¡Mensaje enviado! Un asesor te contactará en menos de 24 horas laborables.</div>
+
+          <!-- LEAD → ODOO CRM: mismo mapeo que cotizacion.html (ver comentario allí).
+               Campo adicional: tema → usado para asignar el lead al equipo correcto. -->
+          <form data-lead-form novalidate class="card" style="padding:28px;">
+            <h3 class="mb-2">Escríbenos</h3>
+            <div class="form-grid">
+              <div>
+                <label for="c-nombre">Nombre y apellido *</label>
+                <input id="c-nombre" name="nombre" type="text" required autocomplete="name">
+              </div>
+              <div>
+                <label for="c-empresa">Empresa (opcional)</label>
+                <input id="c-empresa" name="empresa" type="text" autocomplete="organization">
+              </div>
+              <div>
+                <label for="c-correo">Correo electrónico *</label>
+                <input id="c-correo" name="correo" type="email" required autocomplete="email">
+              </div>
+              <div>
+                <label for="c-telefono">Teléfono / WhatsApp *</label>
+                <input id="c-telefono" name="telefono" type="tel" required autocomplete="tel">
+              </div>
+              <div class="full">
+                <label for="c-tema">¿En qué te ayudamos? *</label>
+                <select id="c-tema" name="tema" required>
+                  <option value="">Selecciona…</option>
+                  <option>Cotización de materiales</option>
+                  <option>Asesoría técnica / Departamento de Proyectos</option>
+                  <option>Quiero ser distribuidor / ferretería</option>
+                  <option>Postventa o garantía</option>
+                  <option>Otro</option>
+                </select>
+              </div>
+              <div class="full">
+                <label for="c-mensaje">Mensaje *</label>
+                <textarea id="c-mensaje" name="mensaje" required></textarea>
+              </div>
+            </div>
+            <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign">
+            <input type="hidden" name="origen" value="web-contacto">
+            <p class="form-note mt-2">Al enviar aceptas nuestro <a href="privacidad.html">aviso de privacidad</a>.</p>
+            <button class="btn btn-primary btn-block mt-2" type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© 2026 Construgypsum Cía. Ltda. · <a href="index.html">Inicio</a> · <a href="productos.html">Productos</a> · <a href="privacidad.html">Privacidad</a></span>
+        <span>📞 (07) 2 88 49 12 · ✉️ ventas@construgypsum.com</span>
+      </div>
+    </div>
+  </footer>
+
+  <a class="wa-float" href="https://wa.me/593996144904?text=Hola%20Construgypsum%2C%20necesito%20informaci%C3%B3n" aria-label="Escribir por WhatsApp">💬 WhatsApp</a>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
