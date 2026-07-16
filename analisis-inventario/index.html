@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico de Inventario y Rotación — Construgypsum</title>
+<style>
+  :root{
+    --navy:#051C2C; --blue:#2251FF; --cyan:#00A9F4; --teal:#00B398;
+    --amber:#F5A623; --red:#D63A5A; --gray:#8C9BA5; --light:#F4F6F8;
+    --ink:#1E2A33; --muted:#5B6B76;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; color:var(--ink); background:#fff; line-height:1.5;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 40px;}
+
+  /* ---------- Header ---------- */
+  header{background:var(--navy); color:#fff; padding:56px 0 48px;}
+  header .kicker{font-size:12px; letter-spacing:2.5px; text-transform:uppercase; color:var(--cyan); margin-bottom:14px;}
+  header h1{font-family:Georgia,'Times New Roman',serif; font-size:40px; font-weight:400; line-height:1.15; max-width:820px;}
+  header .sub{margin-top:18px; font-size:15px; color:#B8C4CC;}
+  header .meta{margin-top:28px; display:flex; gap:36px; flex-wrap:wrap; font-size:13px; color:#8C9BA5;}
+  header .meta b{display:block; color:#fff; font-size:15px; font-weight:600;}
+
+  /* ---------- Sections ---------- */
+  section{padding:56px 0 8px;}
+  .sec-num{font-size:12px; letter-spacing:2.5px; text-transform:uppercase; color:var(--blue); font-weight:700; margin-bottom:10px;}
+  h2{font-family:Georgia,serif; font-size:28px; font-weight:400; line-height:1.25; max-width:860px; margin-bottom:8px;}
+  .lead{font-size:15.5px; color:var(--muted); max-width:860px; margin-bottom:28px;}
+
+  /* ---------- KPI cards ---------- */
+  .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:36px 0 8px;}
+  .kpi{background:var(--light); border-top:3px solid var(--blue); padding:18px 18px 16px;}
+  .kpi.alert{border-top-color:var(--red);}
+  .kpi .v{font-family:Georgia,serif; font-size:30px; color:var(--navy);}
+  .kpi.alert .v{color:var(--red);}
+  .kpi .l{font-size:12.5px; color:var(--muted); margin-top:4px;}
+
+  /* ---------- Findings ---------- */
+  .findings{margin-top:36px; display:grid; gap:0;}
+  .finding{display:flex; gap:20px; padding:20px 0; border-top:1px solid #E1E7EB;}
+  .finding:last-child{border-bottom:1px solid #E1E7EB;}
+  .fnum{font-family:Georgia,serif; font-size:26px; color:var(--blue); min-width:34px; line-height:1.2;}
+  .finding h3{font-size:16px; font-weight:700; color:var(--navy); margin-bottom:4px;}
+  .finding p{font-size:14.5px; color:var(--muted); max-width:840px;}
+
+  /* ---------- Exhibits ---------- */
+  .exhibit{margin:34px 0 46px; border:1px solid #E1E7EB;}
+  .ex-head{padding:16px 22px 14px; border-bottom:1px solid #E1E7EB;}
+  .ex-tag{font-size:11px; letter-spacing:1.8px; text-transform:uppercase; color:var(--gray); font-weight:700;}
+  .ex-title{font-size:16.5px; font-weight:700; color:var(--navy); margin-top:3px;}
+  .ex-body{padding:22px;}
+  .chart-box{position:relative; height:340px;}
+  .chart-svg{width:100%;}
+  .chart-svg svg{display:block; width:100%; height:auto;}
+  .chart-box.tall{height:400px;}
+  .ex-note{padding:10px 22px 14px; font-size:12px; color:var(--gray); border-top:1px solid #EEF1F3;}
+
+  /* ---------- Tables ---------- */
+  table{width:100%; border-collapse:collapse; font-size:13.5px;}
+  th{text-align:left; font-size:11.5px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); padding:10px 10px; border-bottom:2px solid var(--navy); white-space:nowrap;}
+  td{padding:9px 10px; border-bottom:1px solid #ECF0F2; vertical-align:top;}
+  td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
+  tr.hl td{background:#FDF1F4;}
+  .pill{display:inline-block; font-size:11px; font-weight:700; padding:2px 9px; border-radius:10px; white-space:nowrap;}
+  .pill.red{background:#FBE4EA; color:#B02347;}
+  .pill.green{background:#DFF5EF; color:#00755F;}
+  .pill.amber{background:#FDF0D7; color:#9A6A0B;}
+  .pill.gray{background:#EDF0F2; color:#5B6B76;}
+
+  /* ---------- Callout ---------- */
+  .callout{background:var(--navy); color:#fff; padding:30px 34px; margin:40px 0; display:flex; gap:30px; align-items:center;}
+  .callout .big{font-family:Georgia,serif; font-size:44px; color:var(--cyan); white-space:nowrap;}
+  .callout p{font-size:14.5px; color:#C9D3D9;}
+  .callout b{color:#fff;}
+
+  /* ---------- Recommendations ---------- */
+  .recs{display:grid; gap:14px; margin:32px 0 10px;}
+  .rec{display:flex; gap:18px; background:var(--light); padding:20px 22px; border-left:4px solid var(--blue);}
+  .rec .n{font-family:Georgia,serif; font-size:22px; color:var(--blue); min-width:26px;}
+  .rec h4{font-size:15px; color:var(--navy); margin-bottom:3px;}
+  .rec p{font-size:13.5px; color:var(--muted);}
+  .rec .tag{font-size:11px; font-weight:700; color:var(--teal); text-transform:uppercase; letter-spacing:1px;}
+
+  /* ---------- Footer ---------- */
+  .method{background:var(--light); padding:34px 0 40px; margin-top:56px;}
+  .method h3{font-size:13px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:14px;}
+  .method p{font-size:12.5px; color:var(--muted); max-width:900px; margin-bottom:8px;}
+
+  @media(max-width:820px){ .kpis{grid-template-columns:repeat(2,1fr);} header h1{font-size:30px;} .callout{flex-direction:column; align-items:flex-start;} }
+  @media print{ .chart-box{height:300px;} section{padding:30px 0 4px;} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">Construgypsum · Diagnóstico de inventario</div>
+    <h1>El inventario no está sobredimensionado: está mal asignado. Un tercio del capital no produce ventas mientras las líneas ganadoras rozan el quiebre.</h1>
+    <div class="sub">Análisis de rotación sobre 13 meses de historial de ventas · Bodegas Solano, Challuabamba y Monay</div>
+    <div class="meta">
+      <div><b>07 · 07 · 2026</b>Fecha de corte</div>
+      <div><b>1,813</b>SKUs activos analizados</div>
+      <div><b>11</b>Líneas de producto</div>
+      <div><b>Gerencia</b>Preparado para</div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= RESUMEN EJECUTIVO ================= -->
+<section>
+  <div class="wrap">
+    <div class="sec-num">Resumen ejecutivo</div>
+    <h2>Cuatro hallazgos definen la salud del inventario</h2>
+
+    <div class="kpis">
+      <div class="kpi"><div class="v">$1.35M</div><div class="l">Venta mensual promedio (últimos 13 meses)</div></div>
+      <div class="kpi"><div class="v">$1.52M</div><div class="l">Capital en inventario · 1.13 meses de cobertura global</div></div>
+      <div class="kpi alert"><div class="v">$239K</div><div class="l">Inventario "hueso": 666 SKUs sin una sola venta en 13 meses</div></div>
+      <div class="kpi alert"><div class="v">$282K</div><div class="l">Exceso recuperable en 407 SKUs con sobre-stock &gt;200%</div></div>
+    </div>
+
+    <div class="findings">
+      <div class="finding"><div class="fnum">1</div><div>
+        <h3>El negocio es extremadamente concentrado: 115 productos generan el 80% de la venta</h3>
+        <p>El 10% del catálogo activo (clase A) produce $1.08M de venta mensual. Los dos primeros SKUs — panel de gypsum Gyplac 1/2" y Proteja P7 — aportan por sí solos $294K/mes (22% del total). Proteger la disponibilidad de estos 115 productos es la prioridad operativa número uno.</p>
+      </div></div>
+      <div class="finding"><div class="fnum">2</div><div>
+        <h3>$521K — el 34% del inventario — no produce ventas hoy</h3>
+        <p>Se compone de $239K en hueso puro (666 SKUs con cero ventas en 13 meses) y $282K de exceso por encima de 2 meses de cobertura en productos que sí rotan. Es capital de trabajo inmovilizado que puede convertirse en caja o en stock de productos clase A.</p>
+      </div></div>
+      <div class="finding"><div class="fnum">3</div><div>
+        <h3>La paradoja: las líneas que más venden son las que menos cobertura tienen</h3>
+        <p>Construsec opera con 0.31 meses de stock, Intaco con 0.57 y Acesco con 0.79 — las tres muy por debajo del objetivo de 1–2 meses, con riesgo de quiebre permanente. En el extremo opuesto, Yale acumula 88.6 meses de cobertura y Ledex 15.3. El capital está estacionado en las líneas equivocadas.</p>
+      </div></div>
+      <div class="finding"><div class="fnum">4</div><div>
+        <h3>Yale es, en la práctica, una línea muerta: 133 de sus 140 SKUs no vendieron nada</h3>
+        <p>El 95% del catálogo Yale no registró ventas en 13 meses y concentra $45K inmovilizado — el 90% del valor de la línea. Todo su stock está en Solano. Requiere una decisión estratégica: relanzar comercialmente, devolver al proveedor o liquidar.</p>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SECCIÓN 1: ABC ================= -->
+<section>
+  <div class="wrap">
+    <div class="sec-num">Sección 1 · Concentración de ventas (ABC)</div>
+    <h2>Qué se vende: la mitad del revenue sale de apenas 34 productos</h2>
+    <p class="lead">Clasificación ABC sobre la venta mensual promedio (precio × cantidad). Clase A concentra el 80% del revenue con 115 SKUs; clase C agrupa 794 SKUs que en conjunto aportan solo el 5%.</p>
+
+    <div class="exhibit">
+      <div class="ex-head"><div class="ex-tag">Gráfico 1</div><div class="ex-title">Curva de Pareto: el 10% de los SKUs concentra el 80% de la venta</div></div>
+      <div class="ex-body"><div class="chart-svg"><svg viewBox='0 0 980 380' width='100%' xmlns='http://www.w3.org/2000/svg' font-family='Helvetica Neue,Helvetica,Arial,sans-serif'><line x1='70' y1='320.0' x2='930' y2='320.0' stroke='#E8ECEF' stroke-width='1'/><text x='60.0' y='324.0' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >0%</text><line x1='70' y1='262.0' x2='930' y2='262.0' stroke='#E8ECEF' stroke-width='1'/><text x='60.0' y='266.0' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >20%</text><line x1='70' y1='204.0' x2='930' y2='204.0' stroke='#E8ECEF' stroke-width='1'/><text x='60.0' y='208.0' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >40%</text><line x1='70' y1='146.0' x2='930' y2='146.0' stroke='#E8ECEF' stroke-width='1'/><text x='60.0' y='150.0' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >60%</text><line x1='70' y1='88.0' x2='930' y2='88.0' stroke='#E8ECEF' stroke-width='1'/><text x='60.0' y='92.0' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >80%</text><line x1='70' y1='30.0' x2='930' y2='30.0' stroke='#E8ECEF' stroke-width='1'/><text x='60.0' y='34.0' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >100%</text><text x='70.0' y='338.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >0%</text><text x='156.0' y='338.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >10%</text><text x='242.0' y='338.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >20%</text><text x='328.0' y='338.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >30%</text><text x='414.0' y='338.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >40%</text><text x='500.0' y='338.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >50%</text><text x='586.0' y='338.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >60%</text><text x='672.0' y='338.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >70%</text><text x='758.0' y='338.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >80%</text><text x='844.0' y='338.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >90%</text><text x='930.0' y='338.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >100%</text><path d='M 70.0 320.0 L 86.3 170.9 L 102.7 136.7 L 119.9 116.1 L 136.2 101.6 L 152.6 90.6 L 156.9 88.0 L 168.9 81.3 L 185.2 74.1 L 201.6 67.7 L 218.8 63.1 L 235.1 58.7 L 251.5 55.5 L 267.8 52.6 L 284.1 50.0 L 301.3 48.0 L 317.7 46.2 L 334.0 44.5 L 366.7 42.2 L 400.2 40.1 L 432.9 38.4 L 465.6 37.0 L 499.1 35.8 L 531.8 34.6 L 564.5 33.8 L 598.0 33.2 L 630.7 32.6 L 663.4 32.0 L 696.9 31.4 L 729.6 31.2 L 763.2 30.9 L 795.8 30.6 L 828.5 30.3 L 862.1 30.3 L 895.6 30.0 L 930.0 30.0 L 930.0 320 L 70.0 320 Z' fill='rgba(34,81,255,0.08)'/><path d='M 70.0 320.0 L 86.3 170.9 L 102.7 136.7 L 119.9 116.1 L 136.2 101.6 L 152.6 90.6 L 156.9 88.0 L 168.9 81.3 L 185.2 74.1 L 201.6 67.7 L 218.8 63.1 L 235.1 58.7 L 251.5 55.5 L 267.8 52.6 L 284.1 50.0 L 301.3 48.0 L 317.7 46.2 L 334.0 44.5 L 366.7 42.2 L 400.2 40.1 L 432.9 38.4 L 465.6 37.0 L 499.1 35.8 L 531.8 34.6 L 564.5 33.8 L 598.0 33.2 L 630.7 32.6 L 663.4 32.0 L 696.9 31.4 L 729.6 31.2 L 763.2 30.9 L 795.8 30.6 L 828.5 30.3 L 862.1 30.3 L 895.6 30.0 L 930.0 30.0' fill='none' stroke='#2251FF' stroke-width='2.5'/><line x1='156.9' y1='320' x2='156.9' y2='88.0' stroke='#D63A5A' stroke-width='1.3' stroke-dasharray='5,4'/><line x1='70' y1='88.0' x2='156.9' y2='88.0' stroke='#D63A5A' stroke-width='1.3' stroke-dasharray='5,4'/><circle cx='156.9' cy='88.0' r='5' fill='#D63A5A'/><text x='168.9' y='78.0' font-size='13' fill='#051C2C' text-anchor='start' font-weight='700' >Clase A: 115 SKUs (10%) = 80% de la venta</text><text x='500.0' y='362.0' font-size='12' fill='#5B6B76' text-anchor='middle' font-weight='400' >% de SKUs (ordenados por venta descendente)</text><text x='18' y='175.0' font-size='12' fill='#5B6B76' text-anchor='middle' transform='rotate(-90 18 175.0)'>% acumulado de la venta</text><line x1='70' y1='320' x2='930' y2='320' stroke='#051C2C' stroke-width='1.5'/></svg></div></div>
+      <div class="ex-note">Base: 1,147 SKUs con ventas en los últimos 13 meses. Eje X: % acumulado de SKUs ordenados por venta descendente. Clase A = 115 SKUs (80% del revenue) · B = 238 (15%) · C = 794 (5%).</div>
+    </div>
+
+    <div class="exhibit">
+      <div class="ex-head"><div class="ex-tag">Tabla 1</div><div class="ex-title">Los 15 motores del negocio — dónde no puede faltar stock</div></div>
+      <div class="ex-body">
+        <table>
+          <thead><tr><th>#</th><th>Producto</th><th>Línea</th><th class="num">Venta/mes ($)</th><th class="num">Cobertura</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Panel de Gypsum Gyplac 1220×2440×12.7mm (1/2")</td><td>Etex</td><td class="num">175,503</td><td class="num">0.3 m</td><td><span class="pill red">Riesgo quiebre</span></td></tr>
+            <tr><td>2</td><td>Proteja P7 2.44×0.92 m</td><td>Etex</td><td class="num">118,360</td><td class="num">0.9 m</td><td><span class="pill amber">Ajustado</span></td></tr>
+            <tr><td>3</td><td>Tub Desagüe EC 110mm × 3m</td><td>Construccion</td><td class="num">54,899</td><td class="num">1.3 m</td><td><span class="pill green">Sano</span></td></tr>
+            <tr><td>4</td><td>Omega Furring Channel 22×62×0.40×3600mm</td><td>Construsec</td><td class="num">41,673</td><td class="num">0.2 m</td><td><span class="pill red">Riesgo quiebre</span></td></tr>
+            <tr><td>5</td><td>Masilla base de juntas Romeral saco 25kg</td><td>Etex</td><td class="num">41,362</td><td class="num">1.5 m</td><td><span class="pill green">Sano</span></td></tr>
+            <tr><td>6</td><td>Tub PVC Roscable 1/2" × 6m (420psi)</td><td>Construccion</td><td class="num">26,777</td><td class="num">0.1 m</td><td><span class="pill red">Riesgo quiebre</span></td></tr>
+            <tr><td>7</td><td>Panel de Gypsum Gyplac RH 1220×2440×12.7mm</td><td>Etex</td><td class="num">23,747</td><td class="num">0.2 m</td><td><span class="pill red">Riesgo quiebre</span></td></tr>
+            <tr><td>8</td><td>Tub Desagüe EC 75mm × 3m</td><td>Construccion</td><td class="num">22,815</td><td class="num">0.5 m</td><td><span class="pill amber">Ajustado</span></td></tr>
+            <tr><td>9</td><td>Canal de carga Gypsum 40×11×0.70×3660mm</td><td>Construsec</td><td class="num">21,690</td><td class="num">0.3 m</td><td><span class="pill red">Riesgo quiebre</span></td></tr>
+            <tr><td>10</td><td>Zinc 740×3600×0.20mm (12 pies)</td><td>Acesco</td><td class="num">17,922</td><td class="num">0.7 m</td><td><span class="pill amber">Ajustado</span></td></tr>
+            <tr><td>11</td><td>Superboard ST 1220×2440×6mm</td><td>Etex</td><td class="num">17,099</td><td class="num">1.4 m</td><td><span class="pill green">Sano</span></td></tr>
+            <tr class="hl"><td>12</td><td>Omega Furring Channel 22×62×0.40×3600mm (2.º código)</td><td>Construsec</td><td class="num">13,983</td><td class="num">0.0 m</td><td><span class="pill red">Quiebre total</span></td></tr>
+            <tr><td>13</td><td>Supertecho 1055×6000×0.30mm Galvalume</td><td>Acesco</td><td class="num">13,887</td><td class="num">0.6 m</td><td><span class="pill amber">Ajustado</span></td></tr>
+            <tr><td>14</td><td>Ángulo para Gypsum 22×18×0.40×3000mm</td><td>Construsec</td><td class="num">13,362</td><td class="num">0.2 m</td><td><span class="pill red">Riesgo quiebre</span></td></tr>
+            <tr><td>15</td><td>Tub Desagüe EC 160mm × 3m</td><td>Construccion</td><td class="num">13,156</td><td class="num">0.7 m</td><td><span class="pill amber">Ajustado</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ex-note">Cobertura = stock general ÷ venta mensual promedio. Riesgo de quiebre: &lt;0.5 meses · Ajustado: 0.5–1 mes · Sano: 1–2 meses. 7 de los 15 productos más vendidos están en riesgo de quiebre — uno de ellos (Omega Furring, $14K/mes) hoy con stock cero. Existen dos códigos para el mismo Omega Furring; conviene unificarlos en Odoo.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SECCIÓN 2: ROTACIÓN × VALOR ================= -->
+<section>
+  <div class="wrap">
+    <div class="sec-num">Sección 2 · Rotación × valor por línea</div>
+    <h2>Dónde está el capital vs. dónde está la venta</h2>
+    <p class="lead">Etex y Construccion son los motores (61% de la venta). Pero mientras Construsec, Intaco y Acesco venden fuerte con inventarios mínimos, Yale y Ledex acumulan meses de stock sin rotación.</p>
+
+    <div class="exhibit">
+      <div class="ex-head"><div class="ex-tag">Gráfico 2</div><div class="ex-title">Venta mensual vs. capital en inventario por línea</div></div>
+      <div class="ex-body"><div class="chart-svg"><svg viewBox='0 0 980 430' width='100%' xmlns='http://www.w3.org/2000/svg' font-family='Helvetica Neue,Helvetica,Arial,sans-serif'><rect x='630' y='12' width='14' height='14' fill='#2251FF'/><text x='650.0' y='24.0' font-size='12' fill='#5B6B76' text-anchor='start' font-weight='400' >Venta mensual</text><rect x='770' y='12' width='14' height='14' fill='#B8C4CC'/><text x='790.0' y='24.0' font-size='12' fill='#5B6B76' text-anchor='start' font-weight='400' >Capital en inventario</text><line x1='80' y1='370.0' x2='950' y2='370.0' stroke='#E8ECEF'/><text x='70.0' y='374.0' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >$0</text><line x1='80' y1='311.1' x2='950' y2='311.1' stroke='#E8ECEF'/><text x='70.0' y='315.1' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >$100K</text><line x1='80' y1='252.2' x2='950' y2='252.2' stroke='#E8ECEF'/><text x='70.0' y='256.2' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >$200K</text><line x1='80' y1='193.3' x2='950' y2='193.3' stroke='#E8ECEF'/><text x='70.0' y='197.3' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >$300K</text><line x1='80' y1='134.4' x2='950' y2='134.4' stroke='#E8ECEF'/><text x='70.0' y='138.4' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >$400K</text><line x1='80' y1='75.5' x2='950' y2='75.5' stroke='#E8ECEF'/><text x='70.0' y='79.5' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >$500K</text><rect x='91.5' y='68.3' width='26' height='301.7' fill='#2251FF'/><rect x='121.5' y='65.4' width='26' height='304.6' fill='#B8C4CC'/><text x='119.5' y='388.0' font-size='11.5' fill='#5B6B76' text-anchor='middle' font-weight='400' >Etex</text><text x='91.5' y='60.3' font-size='10.5' fill='#2251FF' text-anchor='end' font-weight='700' >$512K</text><text x='147.5' y='57.4' font-size='10.5' fill='#7A8A94' text-anchor='start' font-weight='700' >$517K</text><rect x='170.6' y='184.3' width='26' height='185.7' fill='#2251FF'/><rect x='200.6' y='93.8' width='26' height='276.2' fill='#B8C4CC'/><text x='198.6' y='388.0' font-size='11.5' fill='#5B6B76' text-anchor='middle' font-weight='400' >Construccion</text><text x='183.6' y='178.3' font-size='10.5' fill='#2251FF' text-anchor='middle' font-weight='700' >$315K</text><text x='213.6' y='87.8' font-size='10.5' fill='#7A8A94' text-anchor='start' font-weight='700' >$469K</text><rect x='249.7' y='282.9' width='26' height='87.1' fill='#2251FF'/><rect x='279.7' y='300.9' width='26' height='69.1' fill='#B8C4CC'/><text x='277.7' y='388.0' font-size='11.5' fill='#5B6B76' text-anchor='middle' font-weight='400' >Acesco</text><rect x='328.8' y='285.2' width='26' height='84.8' fill='#2251FF'/><rect x='358.8' y='343.6' width='26' height='26.4' fill='#B8C4CC'/><text x='356.8' y='388.0' font-size='11.5' fill='#5B6B76' text-anchor='middle' font-weight='400' >Construsec</text><rect x='407.9' y='303.1' width='26' height='66.9' fill='#2251FF'/><rect x='437.9' y='265.4' width='26' height='104.6' fill='#B8C4CC'/><text x='435.9' y='388.0' font-size='11.5' fill='#5B6B76' text-anchor='middle' font-weight='400' >Infraestr.</text><rect x='487.0' y='344.7' width='26' height='25.3' fill='#2251FF'/><rect x='517.0' y='333.7' width='26' height='36.3' fill='#B8C4CC'/><text x='515.0' y='388.0' font-size='11.5' fill='#5B6B76' text-anchor='middle' font-weight='400' >FV</text><rect x='566.1' y='349.2' width='26' height='20.8' fill='#2251FF'/><rect x='596.1' y='358.2' width='26' height='11.8' fill='#B8C4CC'/><text x='594.1' y='388.0' font-size='11.5' fill='#5B6B76' text-anchor='middle' font-weight='400' >Intaco</text><rect x='645.2' y='354.3' width='26' height='15.7' fill='#2251FF'/><rect x='675.2' y='353.4' width='26' height='16.6' fill='#B8C4CC'/><text x='673.2' y='388.0' font-size='11.5' fill='#5B6B76' text-anchor='middle' font-weight='400' >Plastiluz</text><rect x='724.3' y='366.4' width='26' height='3.6' fill='#2251FF'/><rect x='754.3' y='363.3' width='26' height='6.7' fill='#B8C4CC'/><text x='752.3' y='388.0' font-size='11.5' fill='#5B6B76' text-anchor='middle' font-weight='400' >Plastidor</text><rect x='803.4' y='369.0' width='26' height='1.0' fill='#2251FF'/><rect x='833.4' y='354.9' width='26' height='15.1' fill='#B8C4CC'/><text x='831.4' y='388.0' font-size='11.5' fill='#5B6B76' text-anchor='middle' font-weight='400' >Ledex</text><text x='846.4' y='348.9' font-size='10.5' fill='#D63A5A' text-anchor='middle' font-weight='700' >$26K</text><rect x='882.5' y='369.7' width='26' height='0.3' fill='#2251FF'/><rect x='912.5' y='340.4' width='26' height='29.6' fill='#B8C4CC'/><text x='910.5' y='388.0' font-size='11.5' fill='#5B6B76' text-anchor='middle' font-weight='400' >Yale</text><text x='925.5' y='334.4' font-size='10.5' fill='#D63A5A' text-anchor='middle' font-weight='700' >$50K</text><line x1='80' y1='370' x2='950' y2='370' stroke='#051C2C' stroke-width='1.5'/></svg></div></div>
+      <div class="ex-note">Barras ordenadas por venta mensual. Cuando la barra gris (inventario) supera con holgura a la azul (venta), la línea acumula más capital del que rota — visible en Yale, Ledex e Infraestructura.</div>
+    </div>
+
+    <div class="exhibit">
+      <div class="ex-head"><div class="ex-tag">Gráfico 3</div><div class="ex-title">Mapa de salud: cobertura (meses) vs. capital invertido por línea</div></div>
+      <div class="ex-body"><div class="chart-svg"><svg viewBox='0 0 980 440' width='100%' xmlns='http://www.w3.org/2000/svg' font-family='Helvetica Neue,Helvetica,Arial,sans-serif'><line x1='80' y1='375.0' x2='950' y2='375.0' stroke='#E8ECEF'/><text x='70.0' y='379.0' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >$0</text><line x1='80' y1='315.2' x2='950' y2='315.2' stroke='#E8ECEF'/><text x='70.0' y='319.2' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >$100K</text><line x1='80' y1='255.4' x2='950' y2='255.4' stroke='#E8ECEF'/><text x='70.0' y='259.4' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >$200K</text><line x1='80' y1='195.5' x2='950' y2='195.5' stroke='#E8ECEF'/><text x='70.0' y='199.5' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >$300K</text><line x1='80' y1='135.7' x2='950' y2='135.7' stroke='#E8ECEF'/><text x='70.0' y='139.7' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >$400K</text><line x1='80' y1='75.9' x2='950' y2='75.9' stroke='#E8ECEF'/><text x='70.0' y='79.9' font-size='11' fill='#5B6B76' text-anchor='end' font-weight='400' >$500K</text><rect x='298.9' y='40' width='94.3' height='335' fill='rgba(0,179,152,0.09)'/><text x='346.0' y='30.0' font-size='11' fill='#00755F' text-anchor='middle' font-weight='700' letter-spacing='1'>ZONA OBJETIVO 1–2 MESES</text><line x1='110.3' y1='375' x2='110.3' y2='380' stroke='#5B6B76'/><text x='110.3' y='395.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >0.25 m</text><line x1='204.6' y1='375' x2='204.6' y2='380' stroke='#5B6B76'/><text x='204.6' y='395.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >0.5 m</text><line x1='298.9' y1='375' x2='298.9' y2='380' stroke='#5B6B76'/><text x='298.9' y='395.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >1 m</text><line x1='393.2' y1='375' x2='393.2' y2='380' stroke='#5B6B76'/><text x='393.2' y='395.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >2 m</text><line x1='517.8' y1='375' x2='517.8' y2='380' stroke='#5B6B76'/><text x='517.8' y='395.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >5 m</text><line x1='667.2' y1='375' x2='667.2' y2='380' stroke='#5B6B76'/><text x='667.2' y='395.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >15 m</text><line x1='761.5' y1='375' x2='761.5' y2='380' stroke='#5B6B76'/><text x='761.5' y='395.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >30 m</text><line x1='910.9' y1='375' x2='910.9' y2='380' stroke='#5B6B76'/><text x='910.9' y='395.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >90 m</text><circle cx='300.2' cy='65.6' r='25.4' fill='#00B398' fill-opacity='0.55' stroke='#00B398' stroke-width='1.5'/><text x='266.8' y='69.6' font-size='11.5' fill='#051C2C' text-anchor='end' font-weight='700' >Etex</text><circle cx='353.1' cy='94.5' r='42.4' fill='#00B398' fill-opacity='0.55' stroke='#00B398' stroke-width='1.5'/><text x='403.5' y='98.5' font-size='11.5' fill='#051C2C' text-anchor='start' font-weight='700' >Construccion</text><circle cx='359.4' cy='268.8' r='30.0' fill='#00B398' fill-opacity='0.55' stroke='#00B398' stroke-width='1.5'/><text x='359.4' y='230.8' font-size='11.5' fill='#051C2C' text-anchor='middle' font-weight='700' >Infraestructura</text><circle cx='266.8' cy='304.8' r='14.7' fill='#F5A623' fill-opacity='0.55' stroke='#F5A623' stroke-width='1.5'/><text x='266.8' y='282.1' font-size='11.5' fill='#051C2C' text-anchor='middle' font-weight='700' >Acesco</text><circle cx='348.5' cy='338.1' r='36.2' fill='#00B398' fill-opacity='0.55' stroke='#00B398' stroke-width='1.5'/><text x='348.5' y='342.1' font-size='11.5' fill='#051C2C' text-anchor='middle' font-weight='700' >FV</text><circle cx='908.7' cy='345.0' r='22.5' fill='#D63A5A' fill-opacity='0.55' stroke='#D63A5A' stroke-width='1.5'/><text x='908.7' y='314.5' font-size='11.5' fill='#051C2C' text-anchor='middle' font-weight='700' >Yale</text><circle cx='139.6' cy='348.2' r='12.6' fill='#D63A5A' fill-opacity='0.55' stroke='#D63A5A' stroke-width='1.5'/><text x='139.6' y='327.6' font-size='11.5' fill='#051C2C' text-anchor='middle' font-weight='700' >Construsec</text><circle cx='306.8' cy='358.1' r='11.7' fill='#00B398' fill-opacity='0.55' stroke='#00B398' stroke-width='1.5'/><text x='287.1' y='362.1' font-size='11.5' fill='#051C2C' text-anchor='end' font-weight='700' >Plastiluz</text><circle cx='669.9' cy='359.7' r='18.7' fill='#D63A5A' fill-opacity='0.55' stroke='#D63A5A' stroke-width='1.5'/><text x='669.9' y='333.0' font-size='11.5' fill='#051C2C' text-anchor='middle' font-weight='700' >Ledex</text><circle cx='222.4' cy='363.0' r='18.3' fill='#F5A623' fill-opacity='0.55' stroke='#F5A623' stroke-width='1.5'/><text x='196.1' y='367.0' font-size='11.5' fill='#051C2C' text-anchor='end' font-weight='700' >Intaco</text><circle cx='381.1' cy='368.2' r='11.6' fill='#00B398' fill-opacity='0.55' stroke='#00B398' stroke-width='1.5'/><text x='400.6' y='372.2' font-size='11.5' fill='#051C2C' text-anchor='start' font-weight='700' >Plastidor</text><text x='515.0' y='420.0' font-size='12' fill='#5B6B76' text-anchor='middle' font-weight='400' >Cobertura: meses de venta en stock (escala logarítmica)</text><text x='18' y='207.5' font-size='12' fill='#5B6B76' text-anchor='middle' transform='rotate(-90 18 207.5)'>Capital en inventario</text><line x1='80' y1='375' x2='950' y2='375' stroke='#051C2C' stroke-width='1.5'/></svg></div></div>
+      <div class="ex-note">Eje X en escala logarítmica: cobertura en meses (stock ÷ venta mensual). Zona objetivo: 1–2 meses (franja verde). Tamaño de burbuja = número de SKUs. Yale (88.6 m) y Ledex (15.3 m) están fuera de rango extremo; Construsec (0.31 m) e Intaco (0.57 m) operan bajo mínimos.</div>
+    </div>
+
+    <div class="exhibit">
+      <div class="ex-head"><div class="ex-tag">Tabla 2</div><div class="ex-title">Scorecard por línea</div></div>
+      <div class="ex-body">
+        <table>
+          <thead><tr><th>Línea</th><th class="num">SKUs</th><th class="num">Venta/mes ($)</th><th class="num">Inventario ($)</th><th class="num">Cobertura</th><th class="num">Hueso ($)</th><th class="num">Exceso &gt;200% ($)</th><th>Diagnóstico</th></tr></thead>
+          <tbody>
+            <tr><td><b>Etex</b></td><td class="num">179</td><td class="num">512,188</td><td class="num">517,148</td><td class="num">1.01 m</td><td class="num">72,352</td><td class="num">54,488</td><td><span class="pill green">Motor · sano</span></td></tr>
+            <tr><td><b>Construccion</b></td><td class="num">497</td><td class="num">315,280</td><td class="num">468,887</td><td class="num">1.49 m</td><td class="num">73,214</td><td class="num">100,635</td><td><span class="pill amber">Motor · depurar cola</span></td></tr>
+            <tr><td><b>Acesco</b></td><td class="num">60</td><td class="num">147,842</td><td class="num">117,291</td><td class="num">0.79 m</td><td class="num">55</td><td class="num">28,466</td><td><span class="pill amber">Reforzar stock</span></td></tr>
+            <tr class="hl"><td><b>Construsec</b></td><td class="num">44</td><td class="num">144,015</td><td class="num">44,759</td><td class="num">0.31 m</td><td class="num">69</td><td class="num">3,816</td><td><span class="pill red">Riesgo quiebre crítico</span></td></tr>
+            <tr><td><b>Infraestructura</b></td><td class="num">249</td><td class="num">113,578</td><td class="num">177,488</td><td class="num">1.56 m</td><td class="num">13,329</td><td class="num">58,812</td><td><span class="pill amber">Exceso moderado</span></td></tr>
+            <tr><td><b>FV</b></td><td class="num">363</td><td class="num">42,961</td><td class="num">61,685</td><td class="num">1.44 m</td><td class="num">21,497</td><td class="num">5,768</td><td><span class="pill amber">Catálogo disperso</span></td></tr>
+            <tr class="hl"><td><b>Intaco</b></td><td class="num">93</td><td class="num">35,270</td><td class="num">20,110</td><td class="num">0.57 m</td><td class="num">85</td><td class="num">3,281</td><td><span class="pill red">Reforzar stock</span></td></tr>
+            <tr><td><b>Plastiluz</b></td><td class="num">38</td><td class="num">26,632</td><td class="num">28,244</td><td class="num">1.06 m</td><td class="num">1,394</td><td class="num">1,253</td><td><span class="pill green">Sano</span></td></tr>
+            <tr><td><b>Plastidor</b></td><td class="num">37</td><td class="num">6,193</td><td class="num">11,311</td><td class="num">1.83 m</td><td class="num">0</td><td class="num">7,822</td><td><span class="pill green">Sano</span></td></tr>
+            <tr class="hl"><td><b>Ledex</b></td><td class="num">97</td><td class="num">1,672</td><td class="num">25,604</td><td class="num">15.3 m</td><td class="num">11,192</td><td class="num">13,100</td><td><span class="pill red">Sobre-stock severo</span></td></tr>
+            <tr class="hl"><td><b>Yale</b></td><td class="num">140</td><td class="num">566</td><td class="num">50,186</td><td class="num">88.6 m</td><td class="num">45,211</td><td class="num">4,173</td><td><span class="pill red">Línea muerta</span></td></tr>
+            <tr><td>Otros</td><td class="num">16</td><td class="num">567</td><td class="num">542</td><td class="num">0.95 m</td><td class="num">466</td><td class="num">70</td><td><span class="pill gray">Marginal</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ex-note">Cobertura objetivo: 1–2 meses (100%–200% de sobre-stock). Hueso = valor de SKUs sin ventas en 13 meses. Exceso = valor del stock por encima de 2 meses de cobertura en SKUs que sí venden.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SECCIÓN 3: CAPITAL IMPRODUCTIVO ================= -->
+<section>
+  <div class="wrap">
+    <div class="sec-num">Sección 3 · Hueso y capital improductivo</div>
+    <h2>El 37% de los SKUs activos no vendió ni una unidad en 13 meses</h2>
+    <p class="lead">666 productos con stock físico y cero ventas inmovilizan $239K. Sumando el exceso de los productos con sobre-stock &gt;200%, hay $521K que no están trabajando — casi 5 meses de compra de la clase A.</p>
+
+    <div class="exhibit">
+      <div class="ex-head"><div class="ex-tag">Gráfico 4</div><div class="ex-title">La asimetría del capital: qué produce la venta vs. qué ocupa el inventario</div></div>
+      <div class="ex-body"><div class="chart-svg"><svg viewBox='0 0 980 240' width='100%' xmlns='http://www.w3.org/2000/svg' font-family='Helvetica Neue,Helvetica,Arial,sans-serif'><rect x='170' y='14' width='13' height='13' fill='#2251FF'/><text x='188.0' y='25.0' font-size='11.5' fill='#5B6B76' text-anchor='start' font-weight='400' >Alta rotación (208 SKUs)</text><rect x='365.6' y='14' width='13' height='13' fill='#00A9F4'/><text x='383.6' y='25.0' font-size='11.5' fill='#5B6B76' text-anchor='start' font-weight='400' >Media rotación (410)</text><rect x='535.6' y='14' width='13' height='13' fill='#B8C4CC'/><text x='553.6' y='25.0' font-size='11.5' fill='#5B6B76' text-anchor='start' font-weight='400' >Baja rotación (529)</text><rect x='699.2' y='14' width='13' height='13' fill='#D63A5A'/><text x='717.2' y='25.0' font-size='11.5' fill='#5B6B76' text-anchor='start' font-weight='400' >Hueso (666)</text><text x='156.0' y='88.0' font-size='13' fill='#051C2C' text-anchor='end' font-weight='700' >% de la venta</text><rect x='170.0' y='58' width='696.5' height='52' fill='#2251FF'/><text x='518.3' y='89.0' font-size='13' fill='#fff' text-anchor='middle' font-weight='700' >89.3%</text><rect x='866.5' y='58' width='71.0' height='52' fill='#00A9F4'/><text x='902.0' y='89.0' font-size='13' fill='#fff' text-anchor='middle' font-weight='700' >9.1%</text><rect x='937.5' y='58' width='12.5' height='52' fill='#B8C4CC'/><text x='943.8' y='52.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >1.6%</text><text x='156.0' y='168.0' font-size='13' fill='#051C2C' text-anchor='end' font-weight='700' >% del inventario</text><rect x='170.0' y='138' width='467.2' height='52' fill='#2251FF'/><text x='403.6' y='169.0' font-size='13' fill='#fff' text-anchor='middle' font-weight='700' >59.9%</text><rect x='637.2' y='138' width='131.0' height='52' fill='#00A9F4'/><text x='702.7' y='169.0' font-size='13' fill='#fff' text-anchor='middle' font-weight='700' >16.8%</text><rect x='768.3' y='138' width='59.3' height='52' fill='#B8C4CC'/><text x='797.9' y='169.0' font-size='13' fill='#fff' text-anchor='middle' font-weight='700' >7.6%</text><rect x='827.5' y='138' width='122.5' height='52' fill='#D63A5A'/><text x='888.8' y='169.0' font-size='13' fill='#fff' text-anchor='middle' font-weight='700' >15.7%</text><text x='950.0' y='210.0' font-size='11.5' fill='#D63A5A' text-anchor='end' font-weight='700' >16% del capital de inventario · 0% de la venta</text></svg></div></div>
+      <div class="ex-note">Segmentación por rotación (K = precio × venta mensual; K≥900 alta rotación — regla vigente del negocio). La alta rotación genera el 89% de la venta con el 60% del capital; el hueso ocupa el 16% del capital y genera 0%.</div>
+    </div>
+
+    <div class="exhibit">
+      <div class="ex-head"><div class="ex-tag">Gráfico 5</div><div class="ex-title">Dónde vive el hueso: Construccion, Etex y Yale concentran el 80%</div></div>
+      <div class="ex-body"><div class="chart-svg"><svg viewBox='0 0 980 330' width='100%' xmlns='http://www.w3.org/2000/svg' font-family='Helvetica Neue,Helvetica,Arial,sans-serif'><line x1='170.0' y1='24' x2='170.0' y2='326' stroke='#E8ECEF'/><text x='170.0' y='342.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >$0</text><line x1='322.5' y1='24' x2='322.5' y2='326' stroke='#E8ECEF'/><text x='322.5' y='342.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >$20K</text><line x1='475.0' y1='24' x2='475.0' y2='326' stroke='#E8ECEF'/><text x='475.0' y='342.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >$40K</text><line x1='627.5' y1='24' x2='627.5' y2='326' stroke='#E8ECEF'/><text x='627.5' y='342.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >$60K</text><line x1='780.0' y1='24' x2='780.0' y2='326' stroke='#E8ECEF'/><text x='780.0' y='342.0' font-size='11' fill='#5B6B76' text-anchor='middle' font-weight='400' >$80K</text><text x='158.0' y='47.5' font-size='12.5' fill='#051C2C' text-anchor='end' font-weight='600' >Construccion</text><rect x='170' y='30' width='558.3' height='26' fill='#051C2C'/><text x='738.3' y='47.5' font-size='11.5' fill='#5B6B76' text-anchor='start' font-weight='400' >$73K · 189 SKUs</text><text x='158.0' y='84.5' font-size='12.5' fill='#051C2C' text-anchor='end' font-weight='600' >Etex</text><rect x='170' y='67' width='551.7' height='26' fill='#051C2C'/><text x='731.7' y='84.5' font-size='11.5' fill='#5B6B76' text-anchor='start' font-weight='400' >$72K · 68 SKUs</text><text x='158.0' y='121.5' font-size='12.5' fill='#051C2C' text-anchor='end' font-weight='600' >Yale</text><rect x='170' y='104' width='344.7' height='26' fill='#D63A5A'/><text x='524.7' y='121.5' font-size='11.5' fill='#5B6B76' text-anchor='start' font-weight='400' >$45K · 133 SKUs</text><text x='158.0' y='158.5' font-size='12.5' fill='#051C2C' text-anchor='end' font-weight='600' >FV</text><rect x='170' y='141' width='163.9' height='26' fill='#051C2C'/><text x='343.9' y='158.5' font-size='11.5' fill='#5B6B76' text-anchor='start' font-weight='400' >$21K · 132 SKUs</text><text x='158.0' y='195.5' font-size='12.5' fill='#051C2C' text-anchor='end' font-weight='600' >Infraestructura</text><rect x='170' y='178' width='101.6' height='26' fill='#051C2C'/><text x='281.6' y='195.5' font-size='11.5' fill='#5B6B76' text-anchor='start' font-weight='400' >$13K · 46 SKUs</text><text x='158.0' y='232.5' font-size='12.5' fill='#051C2C' text-anchor='end' font-weight='600' >Ledex</text><rect x='170' y='215' width='85.3' height='26' fill='#051C2C'/><text x='265.3' y='232.5' font-size='11.5' fill='#5B6B76' text-anchor='start' font-weight='400' >$11K · 57 SKUs</text><text x='158.0' y='269.5' font-size='12.5' fill='#051C2C' text-anchor='end' font-weight='600' >Plastiluz</text><rect x='170' y='252' width='10.6' height='26' fill='#051C2C'/><text x='190.6' y='269.5' font-size='11.5' fill='#5B6B76' text-anchor='start' font-weight='400' >$1K · 11 SKUs</text><text x='158.0' y='306.5' font-size='12.5' fill='#051C2C' text-anchor='end' font-weight='600' >Resto</text><rect x='170' y='289' width='5.1' height='26' fill='#051C2C'/><text x='185.1' y='306.5' font-size='11.5' fill='#5B6B76' text-anchor='start' font-weight='400' >$1K · 30 SKUs</text></svg></div></div>
+      <div class="ex-note">Valor inmovilizado en SKUs sin ventas, por línea. En Yale y FV el hueso es un problema de catálogo (95% y 36% de sus SKUs); en Etex se concentra en 2 SKUs de lana de vidrio ($57K).</div>
+    </div>
+
+    <div class="callout">
+      <div class="big">$57K</div>
+      <p><b>Dos SKUs de lana de vidrio Frescasa (Etex) son el hueso más caro del inventario.</b> 1,873 unidades sin una sola venta en 13 meses, repartidas en las tres bodegas. Junto con Yale ($45K), dos decisiones puntuales atacarían el 43% de todo el hueso.</p>
+    </div>
+
+    <div class="exhibit">
+      <div class="ex-head"><div class="ex-tag">Tabla 3</div><div class="ex-title">Top 10 huesos por capital inmovilizado</div></div>
+      <div class="ex-body">
+        <table>
+          <thead><tr><th>#</th><th>Producto</th><th>Línea</th><th class="num">Stock (uds)</th><th class="num">$ inmovilizado</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Lana de vidrio sin papel 7,500×1,219×63.5mm Frescasa</td><td>Etex</td><td class="num">1,329</td><td class="num">33,464</td></tr>
+            <tr><td>2</td><td>Lana de vidrio sin papel 15,240×1,219×63.5mm Frescasa</td><td>Etex</td><td class="num">544</td><td class="num">23,746</td></tr>
+            <tr><td>3</td><td>Tub Flex PE BD 100 mts D=2 × 64 PSI</td><td>Construccion</td><td class="num">15</td><td class="num">3,855</td></tr>
+            <tr><td>4</td><td>Tanque 5000 lts (cilíndrico horizontal)</td><td>Construccion</td><td class="num">4</td><td class="num">3,306</td></tr>
+            <tr><td>5</td><td>ASP 1 Senn 7025RD-2-1"M #20×10</td><td>Infraestructura</td><td class="num">106</td><td class="num">3,152</td></tr>
+            <tr><td>6</td><td>Simplisima Deco Ankara Gris 1200×2400×6mm</td><td>Etex</td><td class="num">119</td><td class="num">2,512</td></tr>
+            <tr><td>7</td><td>Biotanque séptico modelo 2,000 lts</td><td>Construccion</td><td class="num">6</td><td class="num">2,429</td></tr>
+            <tr><td>8</td><td>Capuchón plástico PRO rojo</td><td>Etex</td><td class="num">116,510</td><td class="num">2,330</td></tr>
+            <tr><td>9</td><td>Cruz desagüe 1 PVC INY CC 75mm</td><td>Construccion</td><td class="num">151</td><td class="num">2,313</td></tr>
+            <tr><td>10</td><td>Tee inserto MET M K31 PP Termof. 20mm × 1/2"</td><td>Construccion</td><td class="num">621</td><td class="num">2,308</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ex-note">Estos 10 SKUs concentran $79K — el 33% de todo el hueso. La cola restante (656 SKUs, $160K) promedia $244 por SKU y se gestiona mejor por lote (liquidación por categoría).</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RECOMENDACIONES ================= -->
+<section>
+  <div class="wrap">
+    <div class="sec-num">Recomendaciones</div>
+    <h2>Cinco movimientos para poner $500K a trabajar</h2>
+    <div class="recs">
+      <div class="rec"><div class="n">1</div><div>
+        <div class="tag">Inmediato · Proteger revenue</div>
+        <h4>Blindar los 115 SKUs clase A con cobertura mínima de 1 mes</h4>
+        <p>7 de los 15 productos más vendidos están hoy en riesgo de quiebre (&lt;0.5 meses), incluido un Omega Furring de $14K/mes con stock cero. Priorizar reposición de Construsec (0.31 m), Intaco (0.57 m) y Acesco (0.79 m), y los paneles Gyplac. La clase A factura ~$250K por semana: cada día de quiebre es venta que se va a la competencia.</p>
+      </div></div>
+      <div class="rec"><div class="n">2</div><div>
+        <div class="tag">30 días · Liberar caja</div>
+        <h4>Plan de liquidación del hueso: empezar por los 10 SKUs que valen $79K</h4>
+        <p>Negociar devolución con proveedor (lana Frescasa con Etex), luego descuentos agresivos, combos con productos A y venta a constructoras. Meta sugerida: recuperar 50% del valor ($120K) en 2 trimestres.</p>
+      </div></div>
+      <div class="rec"><div class="n">3</div><div>
+        <div class="tag">30 días · Decisión estratégica</div>
+        <h4>Definir el futuro de Yale: relanzar, devolver o liquidar</h4>
+        <p>133 de 140 SKUs sin ventas, $45K inmovilizado, 100% del stock en Solano, 88.6 meses de cobertura. Si no hay plan comercial concreto para el trimestre, liquidar y salir.</p>
+      </div></div>
+      <div class="rec"><div class="n">4</div><div>
+        <div class="tag">Continuo · Disciplina de compra</div>
+        <h4>Congelar compras en los 407 SKUs con sobre-stock &gt;200%</h4>
+        <p>No reponer hasta que la cobertura baje de 2 meses; el consumo natural libera $282K sin esfuerzo comercial. Excepciones solo con aprobación de gerencia (compras oportunistas o importaciones de lote mínimo).</p>
+      </div></div>
+      <div class="rec"><div class="n">5</div><div>
+        <div class="tag">Continuo · Gobernanza</div>
+        <h4>Institucionalizar el ciclo mensual: buffer → reporte → decisión</h4>
+        <p>Repetir este diagnóstico cada mes con el corte del buffer y medir tres indicadores: % de clase A con cobertura &lt;1 mes (meta: 0%), $ en hueso (meta: −50% en 6 meses) y cobertura global (meta: 1.0–1.5 meses).</p>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= METODOLOGÍA ================= -->
+<div class="method">
+  <div class="wrap">
+    <h3>Metodología y notas</h3>
+    <p><b>Fuente:</b> Buffer Construgypsum al 07-07-2026 (Odoo) — 4,009 SKUs, de los cuales 1,813 están activos (con stock o ventas). Los 2,196 restantes no registran ni stock ni ventas y se excluyeron del análisis. Venta mensual = "Ventas Cant Prom" (promedio mensual del período de 13 meses) × precio promedio de venta.</p>
+    <p><b>Líneas:</b> asignadas cruzando el código de producto con el Reporte Abastecimiento Consolidado del 06-07-2026 (2,757 SKUs). Los 111 SKUs activos restantes se clasificaron por similitud de nombre de producto; 16 quedaron como "Otros" (&lt;0.1% del valor).</p>
+    <p><b>Definiciones:</b> Cobertura (columna "Sobre Stock") = stock general ÷ venta mensual promedio; 100% = 1 mes. Diferencia = venta promedio − stock general; valores negativos (rojo) indican stock por encima de la venta mensual. Hueso = SKU con stock y cero ventas en el período. Exceso recuperable = valor del stock por encima de 2 meses de cobertura (umbral 200% vigente en el negocio). Alta rotación: K = precio × venta mensual ≥ $900. Valores a precio promedio de venta; el capital a costo es proporcionalmente menor según margen.</p>
+    <p style="margin-top:14px; color:#9AA7AF;">Preparado con datos de Odoo · Construgypsum, Cuenca — Ecuador · 07 de julio de 2026</p>
+  </div>
+</div>
+
+</body>
+</html>
