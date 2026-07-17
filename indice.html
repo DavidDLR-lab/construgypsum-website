@@ -4,34 +4,39 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Construgypsum · Índice del Proyecto</title>
+<title>Construgypsum · Dashboard del Proyecto</title>
 <style>
   :root{
     --navy:#1F3557; --navy-dark:#16263F; --orange:#D9822B; --orange-dark:#B96A1D;
     --orange-light:#F8ECDD; --light:#F4F6F8; --text:#2B3440; --muted:#66707C;
-    --border:#DDE3EA; --white:#FFFFFF; --green:#2C7A4B; --red:#B3402A;
+    --border:#DDE3EA; --white:#FFFFFF; --green:#2C7A4B; --red:#B3402A; --sky:#3D7EA6;
     --radius:10px; --shadow:0 4px 14px rgba(22,38,63,.10);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:var(--light);line-height:1.55}
   a{color:var(--orange-dark);text-decoration:none}
   a:hover{text-decoration:underline}
-  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
-  header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-dark) 100%);color:var(--white);padding:44px 0 36px}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+  header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-dark) 100%);color:var(--white);padding:44px 0 34px}
   header h1{font-size:30px;letter-spacing:.5px}
   header h1 span{color:var(--orange)}
-  header p{color:#C9D3E0;margin-top:8px;max-width:720px;font-size:15px}
-  .confid{display:inline-block;margin-top:14px;background:rgba(217,130,43,.15);border:1px solid var(--orange);color:#F3C48F;font-size:11.5px;font-weight:700;letter-spacing:1.5px;padding:5px 12px;border-radius:999px}
-  nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5}
-  nav .wrap{display:flex;gap:22px;overflow-x:auto}
-  nav a{padding:13px 2px;font-size:13.5px;font-weight:600;color:var(--navy);white-space:nowrap;border-bottom:3px solid transparent}
+  header .tag{color:#C9D3E0;margin-top:8px;max-width:760px;font-size:15px}
+  header .north{margin-top:14px;font-size:14px;color:#F3C48F;font-style:italic}
+  .confid{display:inline-block;margin-top:14px;background:rgba(217,130,43,.15);border:1px solid var(--orange);color:#F3C48F;font-size:11px;font-weight:700;letter-spacing:1.5px;padding:5px 12px;border-radius:999px}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:26px}
+  .stat{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:var(--radius);padding:14px 16px}
+  .stat b{display:block;font-size:26px;color:var(--orange)}
+  .stat span{font-size:12px;color:#C9D3E0;letter-spacing:.5px}
+  nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:9}
+  nav .wrap{display:flex;gap:20px;overflow-x:auto}
+  nav a{padding:13px 2px;font-size:13px;font-weight:600;color:var(--navy);white-space:nowrap;border-bottom:3px solid transparent}
   nav a:hover{border-bottom-color:var(--orange);text-decoration:none}
-  section{padding:40px 0 8px}
-  h2{color:var(--navy);font-size:21px;margin-bottom:6px}
-  .sub{color:var(--muted);font-size:14px;margin-bottom:22px}
+  section{padding:42px 0 10px}
+  h2{color:var(--navy);font-size:22px;margin-bottom:6px}
+  .sub{color:var(--muted);font-size:14px;margin-bottom:22px;max-width:820px}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
   .card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
-  .card h3{font-size:14.5px;color:var(--navy);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid var(--orange-light);padding-bottom:8px}
+  .card h3{font-size:14px;color:var(--navy);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid var(--orange-light);padding-bottom:8px}
   .card ul{list-style:none}
   .card li{padding:7px 0;border-bottom:1px dashed var(--border);font-size:13.5px}
   .card li:last-child{border-bottom:none}
@@ -42,71 +47,520 @@
   tr:nth-child(even) td{background:var(--light)}
   td.f{white-space:nowrap;font-weight:600;color:var(--navy)}
   td.dur{white-space:nowrap;color:var(--muted)}
+  tr.total td{background:var(--orange-light);font-weight:700;color:var(--navy);border-top:2px solid var(--orange)}
   .note{font-size:12.5px;color:var(--muted);font-style:italic;margin-top:10px}
   /* Kanban */
   .kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px}
   .kcol{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:12px;min-height:120px}
-  .kcol h4{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 10px;border-radius:6px;margin-bottom:10px;color:var(--white)}
+  .kcol h4{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 10px;border-radius:6px;margin-bottom:10px;color:var(--white)}
   .k-done h4{background:var(--green)} .k-prog h4{background:var(--orange)} .k-block h4{background:var(--red)} .k-pend h4{background:var(--muted)}
   .kcard{background:var(--light);border:1px solid var(--border);border-left:4px solid var(--navy);border-radius:6px;padding:9px 10px;margin-bottom:8px;font-size:12.5px;font-weight:600;color:var(--navy);cursor:pointer;transition:transform .12s}
   .kcard:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
   .kcard .st{display:block;font-weight:400;color:var(--muted);font-size:11.5px;margin-top:3px}
-  /* Detalle proyecto */
+  .kcard .pb{margin-top:7px}
+  /* Progress bar */
+  .pb{height:7px;background:#E6EAEF;border-radius:99px;overflow:hidden}
+  .pb i{display:block;height:100%;background:linear-gradient(90deg,var(--orange),var(--orange-dark));border-radius:99px}
+  /* Project detail */
   .proj{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;box-shadow:var(--shadow);overflow:hidden}
   .proj summary{cursor:pointer;padding:14px 18px;font-weight:700;color:var(--navy);font-size:14.5px;display:flex;justify-content:space-between;align-items:center;gap:12px;list-style:none}
   .proj summary::-webkit-details-marker{display:none}
-  .badge{font-size:11px;font-weight:700;letter-spacing:.5px;padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .badge{font-size:10.5px;font-weight:700;letter-spacing:.5px;padding:4px 10px;border-radius:999px;white-space:nowrap}
   .b-done{background:#E3F2E9;color:var(--green)} .b-prog{background:var(--orange-light);color:var(--orange-dark)}
   .b-block{background:#F9E5E0;color:var(--red)} .b-pend{background:#EBEEF2;color:var(--muted)}
   .proj .body{padding:0 18px 16px;font-size:13.5px}
-  .proj .body p{margin-bottom:10px;color:var(--text)}
+  .proj .body p{margin-bottom:12px;color:var(--text)}
+  .cols2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:760px){.cols2{grid-template-columns:1fr}}
   .tl{list-style:none;margin-left:6px;border-left:2px solid var(--orange-light);padding-left:16px}
   .tl li{position:relative;padding:4px 0;font-size:13px;color:var(--muted)}
   .tl li::before{content:"";position:absolute;left:-21px;top:11px;width:8px;height:8px;border-radius:50%;background:var(--orange)}
   .tl li b{color:var(--navy)}
-  footer{margin-top:44px;padding:22px 0;background:var(--navy-dark);color:#9AA7B5;font-size:12.5px;text-align:center}
-  @media(max-width:820px){.kanban{grid-template-columns:repeat(2,1fr)}}
+  .tasks{list-style:none}
+  .tasks li{padding:5px 0;font-size:13px;border-bottom:1px dashed var(--border)}
+  .tasks li:last-child{border-bottom:none}
+  .tasks .ok{color:var(--green)} .tasks .todo{color:var(--muted)}
+  .ph{font-size:11.5px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin:10px 0 6px;font-weight:700}
+  /* Architecture */
+  .archtoggle{display:flex;gap:0;margin-bottom:18px;border:1px solid var(--border);border-radius:999px;overflow:hidden;width:fit-content;background:var(--white)}
+  .archtoggle button{border:0;background:transparent;padding:10px 26px;font-size:13.5px;font-weight:700;color:var(--muted);cursor:pointer}
+  .archtoggle button.on{background:var(--navy);color:var(--white)}
+  .arch{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 22px}
+  .arch h3{text-align:center;color:var(--navy);font-size:16px;margin-bottom:4px}
+  .arch .sub2{text-align:center;color:var(--muted);font-size:12.5px;margin-bottom:22px}
+  .arow{display:grid;gap:14px;margin-bottom:14px}
+  .a3{grid-template-columns:repeat(3,1fr)}
+  .a1{grid-template-columns:minmax(220px,420px);justify-content:center}
+  .abox{border:2px solid var(--navy);border-radius:8px;padding:10px 12px;text-align:center;font-size:13px;font-weight:700;color:var(--navy);background:var(--white)}
+  .abox span{display:block;font-weight:400;font-size:11.5px;color:var(--muted);margin-top:2px}
+  .abox.agent{border-color:var(--green);background:#F0F8F3}
+  .abox.friction{border-style:dashed;border-color:var(--red);color:var(--red)}
+  .abox.people{border-color:var(--sky)}
+  .aconn{text-align:center;color:var(--muted);font-size:12px;padding:2px 0}
+  .aconn.bad{color:var(--red);font-style:italic}
+  .aconn.good{color:var(--green)}
+  .pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+  .pill{border:1.5px dashed var(--red);color:var(--red);font-size:12px;padding:5px 12px;border-radius:999px}
+  .pill.ok{border-style:solid;border-color:var(--green);color:var(--green);background:#F0F8F3}
+  @media(max-width:720px){.a3{grid-template-columns:1fr}}
+  /* Analysis snippets */
+  .snips{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:16px}
+  .snip{background:var(--white);border:1px solid var(--border);border-left:5px solid var(--orange);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+  .snip b{display:block;font-size:24px;color:var(--navy)}
+  .snip .t{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--orange-dark);font-weight:700;margin-bottom:6px}
+  .snip p{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .decisions{background:var(--navy);color:var(--white);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+  .decisions h3{color:var(--orange);font-size:14px;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+  .decisions ol{margin-left:20px}
+  .decisions li{font-size:13.5px;padding:4px 0;color:#DCE4EE}
+  .decisions li b{color:var(--white)}
+  /* Competitors */
+  .swot{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+  .sq{border-radius:6px;padding:8px 10px;font-size:12px}
+  .sq b{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+  .sq.f{background:#E3F2E9;color:#1E5738} .sq.d{background:#F9E5E0;color:#7C2D1C}
+  .sq.o{background:#E8F0F7;color:#1F4460} .sq.a{background:#FBF3E4;color:#7A5210}
+  /* Team */
+  .team{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+  .member{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);display:flex;gap:12px;align-items:center}
+  .avatar{width:46px;height:46px;border-radius:50%;background:var(--navy);color:var(--white);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0}
+  .avatar.cc{background:var(--orange)}
+  .member b{display:block;font-size:14px;color:var(--navy)}
+  .member span{font-size:12px;color:var(--muted)}
+  /* Roadmap */
+  .road{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:760px){.road{grid-template-columns:1fr}}
+  .rcol{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+  .rcol h4{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;padding:6px 10px;border-radius:6px;color:var(--white);width:fit-content}
+  .r1 h4{background:var(--green)} .r2 h4{background:var(--orange)} .r3 h4{background:var(--navy)}
+  .rcol li{list-style:none;font-size:13px;padding:6px 0;border-bottom:1px dashed var(--border)}
+  .rcol li:last-child{border-bottom:none}
+  .rcol li span{display:block;font-size:11.5px;color:var(--muted)}
+  .cta{margin-top:22px;background:linear-gradient(135deg,var(--orange) 0%,var(--orange-dark) 100%);border-radius:var(--radius);padding:22px;color:var(--white);display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;box-shadow:var(--shadow)}
+  .cta b{font-size:17px}
+  .cta p{font-size:13px;opacity:.92;margin-top:4px;max-width:560px}
+  .cta a{background:var(--white);color:var(--orange-dark);font-weight:700;font-size:13.5px;padding:11px 20px;border-radius:8px;white-space:nowrap}
+  .cta a:hover{text-decoration:none;transform:translateY(-1px)}
+  footer{margin-top:46px;padding:22px 0;background:var(--navy-dark);color:#9AA7B5;font-size:12.5px;text-align:center}
 </style>
 </head>
 <body>
 
 <header>
   <div class="wrap">
-    <h1>CONSTRU<span>GYPSUM</span> · Índice del Proyecto</h1>
-    <p>Automatización de inventario y gestión comercial con IA — bodega Challuabamba, Cuenca, Ecuador. Todos los recursos, reuniones y proyectos del engagement en un solo lugar.</p>
+    <h1>CONSTRU<span>GYPSUM</span> · Dashboard del Proyecto</h1>
+    <p class="tag">Automatización de inventario y gestión comercial con IA — Construgypsum × Cascade Clarity · Cuenca, Ecuador.</p>
+    <p class="north">Un solo lugar donde el equipo ve el avance, el valor entregado y lo que viene.</p>
     <span class="confid">MATERIAL INTERNO · NO PUBLICAR</span>
+    <div class="stats">
+      <div class="stat"><b>11</b><span>Reuniones de trabajo</span></div>
+      <div class="stat"><b>11 h 18 m</b><span>Horas en sesión</span></div>
+      <div class="stat"><b>10</b><span>Frentes de trabajo</span></div>
+      <div class="stat"><b>4</b><span>Skills creadas</span></div>
+      <div class="stat"><b>17 días</b><span>30-jun → 16-jul-2026</span></div>
+    </div>
   </div>
 </header>
 
 <nav><div class="wrap">
-  <a href="#recursos">Recursos</a>
+  <a href="#proyectos">Proyectos</a>
+  <a href="#arquitectura">Arquitectura</a>
+  <a href="#analisis">Análisis</a>
+  <a href="#competencia">Competencia</a>
+  <a href="#equipo">Equipo</a>
+  <a href="#roadmap">Roadmap</a>
   <a href="#reuniones">Reuniones</a>
-  <a href="#proyectos">Estado de proyectos</a>
+  <a href="#recursos">Recursos</a>
 </div></nav>
+
+<section id="proyectos"><div class="wrap">
+  <h2>Estado de proyectos</h2>
+  <p class="sub">Al 16 de julio de 2026. Haz clic en cualquier tarjeta para abrir sus tareas, avance y evolución.</p>
+
+  <div class="kanban">
+    <div class="kcol k-done"><h4>✔ Hecho</h4>
+      <div class="kcard" data-p="p10">Canal WhatsApp + bullet points<span class="st">En uso diario</span><div class="pb"><i style="width:100%"></i></div></div>
+      <div class="kcard" data-p="p8">Sitios web (Ana y Francisco)<span class="st">Despliegue pospuesto</span><div class="pb"><i style="width:90%"></i></div></div>
+    </div>
+    <div class="kcol k-prog"><h4>▶ En curso</h4>
+      <div class="kcard" data-p="p3">Reporte fechas de llegada<span class="st">Skill entregada · en pruebas</span><div class="pb"><i style="width:80%"></i></div></div>
+      <div class="kcard" data-p="p1">Reporte abastecimiento Challuabamba<span class="st">Skill vigente · rumbo a ejecución 9:30</span><div class="pb"><i style="width:75%"></i></div></div>
+      <div class="kcard" data-p="p2">Skills de Claude / Cowork<span class="st">Conectores M365/Exa en configuración</span><div class="pb"><i style="width:70%"></i></div></div>
+      <div class="kcard" data-p="p5">Estado Proveedor + SharePoint<span class="st">Doc compartido con Mayra</span><div class="pb"><i style="width:65%"></i></div></div>
+    </div>
+    <div class="kcol k-block"><h4>⏸ Bloqueado</h4>
+      <div class="kcard" data-p="p9">Simulación logística (Katherine)<span class="st">Esperando su análisis</span><div class="pb"><i style="width:40%"></i></div></div>
+    </div>
+    <div class="kcol k-pend"><h4>◻ Pendiente</h4>
+      <div class="kcard" data-p="p4">Reporte producto hueso<span class="st">Skill entregada · falta probar</span><div class="pb"><i style="width:50%"></i></div></div>
+      <div class="kcard" data-p="p6">Ventas Odoo + WhatsApp (John)<span class="st">En fase de propuesta</span><div class="pb"><i style="width:20%"></i></div></div>
+      <div class="kcard" data-p="p7">API REST de Odoo<span class="st">Reunión con sistemas sin agendar</span><div class="pb"><i style="width:10%"></i></div></div>
+    </div>
+  </div>
+
+  <details class="proj" id="p1"><summary>Reporte de abastecimiento Bodega Challuabamba <span class="badge b-prog">EN CURSO · 75%</span></summary><div class="body">
+    <p>Reporte automatizado a partir de los exports de Odoo: qué comprar y qué transferir a Challuabamba, con prioridades (crítico/alto), sustitutos, motivo y Estado Proveedor. Panchito lo genera y envía a compras; David mantiene la skill.</p>
+    <div class="cols2">
+      <div><p class="ph">Tareas</p><ul class="tasks">
+        <li class="ok">✔ Reglas consolidadas en documento único (sobrestock en %, sustitutos, transferencia)</li>
+        <li class="ok">✔ Skill v2 regenerada y reinstalada</li>
+        <li class="ok">✔ Reporte enviado a compras como parte del proyecto de IA</li>
+        <li class="todo">▢ Ejecución programada diaria a las 9:30 (scheduled)</li>
+        <li class="todo">▢ Capacitar a Mayra en la columna Estado Proveedor</li>
+      </ul></div>
+      <div><p class="ph">Evolución</p><ul class="tl">
+        <li><b>30-jun</b> · Se define el ticket de monitoreo de inventario (13 meses de histórico).</li>
+        <li><b>03-jul</b> · Primer montaje en Claude; consolidado de 720 entradas; idea de skill.</li>
+        <li><b>07-jul</b> · Revisión con Francisco: memoria del producto, padre/hijo, comprar/transferir.</li>
+        <li><b>10-jul</b> · Solo crítico/alto, columna Estado Proveedor, sustitutos, transferencia total.</li>
+        <li><b>13-jul</b> · Sobrestock en %, documento único de reglas, PDF filtrado.</li>
+        <li><b>14-jul</b> · Reporte enviado a compras; columna de tipo de rotación propuesta.</li>
+        <li><b>15/16-jul</b> · Formalización como skill; meta de ejecución programada.</li>
+      </ul></div>
+    </div>
+  </div></details>
+
+  <details class="proj" id="p2"><summary>Skills de Claude / Cowork (capacitación) <span class="badge b-prog">EN CURSO · 70%</span></summary><div class="body">
+    <p>Instalación de Claude/Cowork, suscripción corporativa y capacitación de Panchito para usar y probar las skills. David crea las skills; Panchito instala y prueba.</p>
+    <div class="cols2">
+      <div><p class="ph">Tareas</p><ul class="tasks">
+        <li class="ok">✔ Instalación + suscripción pro con RUC de la empresa</li>
+        <li class="ok">✔ Proyecto de trabajo creado; Claude en el celular de Francisco</li>
+        <li class="ok">✔ 2 skills nuevas entregadas (llegadas y hueso)</li>
+        <li class="todo">▢ Completar login Microsoft 365 (código de verificación)</li>
+        <li class="todo">▢ Activar conectores M365 + Exa y reportes programados</li>
+      </ul></div>
+      <div><p class="ph">Evolución</p><ul class="tl">
+        <li><b>30-jun</b> · Tarea de instalar Cowork y crear la cuenta corporativa.</li>
+        <li><b>03-jul</b> · Instalación y suscripción completadas.</li>
+        <li><b>08-jul</b> · Taller de skills.</li>
+        <li><b>13-jul</b> · Skill del reporte actualizada y reenviada.</li>
+        <li><b>16-jul</b> · Dos skills nuevas; conectores en configuración.</li>
+      </ul></div>
+    </div>
+  </div></details>
+
+  <details class="proj" id="p3"><summary>Reporte de fechas de llegada (semanal) <span class="badge b-prog">EN PRUEBAS · 80%</span></summary><div class="body">
+    <p>Reporte semanal en Word que cruza el documento de compras (fechas de llegada) con el inventario, agrupado por semanas, con alertas de stock correcto y sobrestock.</p>
+    <div class="cols2">
+      <div><p class="ph">Tareas</p><ul class="tasks">
+        <li class="ok">✔ Formato definido: Word, por semanas, hasta fines de agosto</li>
+        <li class="ok">✔ Skill entregada y probada en el taller del 16-jul</li>
+        <li class="todo">▢ Enviar el resultado del reporte por el chat grupal</li>
+        <li class="todo">▢ Historial de rotación (pedido a Francisco) para anticipar quiebres</li>
+      </ul></div>
+      <div><p class="ph">Evolución</p><ul class="tl">
+        <li><b>13-jul</b> · Se acuerda unificar el reporte con las fechas de compras.</li>
+        <li><b>14-jul</b> · El reporte distingue llegada vs. fabricación.</li>
+        <li><b>15-jul</b> · Formato Word semanal definido.</li>
+        <li><b>16-jul</b> · Skill entregada y probada.</li>
+      </ul></div>
+    </div>
+  </div></details>
+
+  <details class="proj" id="p4"><summary>Reporte de producto hueso <span class="badge b-pend">PENDIENTE DE PRUEBA · 50%</span></summary><div class="body">
+    <p>Identificación del inventario inmovilizado (stock sin ventas) que congela liquidez, con capital parado por línea. Panchito debe ejecutar la skill y reportar.</p>
+    <div class="cols2">
+      <div><p class="ph">Tareas</p><ul class="tasks">
+        <li class="ok">✔ Skill entregada (16-jul)</li>
+        <li class="todo">▢ Probar con el buffer real y enviar resultado</li>
+        <li class="todo">▢ Accionar los grandes: lana de vidrio Etex ($57K) y línea Yale ($45K)</li>
+      </ul></div>
+      <div><p class="ph">Evolución</p><ul class="tl">
+        <li><b>03-jul</b> · Reducir el hueso se define como objetivo estratégico.</li>
+        <li><b>07-jul</b> · Refuerzo de la meta de proteger el flujo de caja.</li>
+        <li><b>16-jul</b> · Skill entregada; pendiente probarla.</li>
+      </ul></div>
+    </div>
+  </div></details>
+
+  <details class="proj" id="p5"><summary>Columna Estado Proveedor + Excel de compras en SharePoint <span class="badge b-prog">EN CURSO · 65%</span></summary><div class="body">
+    <p>Columna que refleja las gestiones de compra activas (backorder, fechas) alimentada por el Excel de Mayra, centralizado en SharePoint. David investiga la integración con Cowork.</p>
+    <div class="cols2">
+      <div><p class="ph">Tareas</p><ul class="tasks">
+        <li class="ok">✔ Columna definida (Con fecha de llegada / Back Order / Sin gestión)</li>
+        <li class="ok">✔ Documento de compras subido a SharePoint y compartido con Mayra</li>
+        <li class="todo">▢ Completar login Microsoft 365 en Cowork</li>
+        <li class="todo">▢ Lectura automática del Excel desde los reportes</li>
+      </ul></div>
+      <div><p class="ph">Evolución</p><ul class="tl">
+        <li><b>10-jul</b> · Se acuerdan la columna y el acceso al Excel de compras.</li>
+        <li><b>13-jul</b> · Se añaden backorders y fechas de llegada.</li>
+        <li><b>14-jul</b> · Decisión de usar SharePoint (protección de datos).</li>
+        <li><b>15-jul</b> · Documento en SharePoint, compartido con Mayra.</li>
+        <li><b>16-jul</b> · Conectores en configuración.</li>
+      </ul></div>
+    </div>
+  </div></details>
+
+  <details class="proj" id="p6"><summary>Automatización de ventas · Odoo + WhatsApp (con John) <span class="badge b-pend">EN PROPUESTA · 20%</span></summary><div class="body">
+    <p>Proyecto macro para automatizar el reporte de visitas de vendedores integrando agentes de IA con WhatsApp, Odoo y PowerBI. Ver la arquitectura objetivo en la sección Arquitectura.</p>
+    <div class="cols2">
+      <div><p class="ph">Tareas</p><ul class="tasks">
+        <li class="ok">✔ Discovery con John Cuellar y Francisco (09-jul)</li>
+        <li class="todo">▢ Propuesta formal + proof of concept (John)</li>
+        <li class="todo">▢ Grupo de WhatsApp / hilo con los cuatro (David)</li>
+      </ul></div>
+      <div><p class="ph">Evolución</p><ul class="tl">
+        <li><b>30-jun</b> · Se define el ticket de CRM/gestión comercial.</li>
+        <li><b>09-jul</b> · Discovery con John; acuerdos de propuesta y canal.</li>
+        <li><b>15-jul</b> · Confirmado: sigue en fase de propuesta.</li>
+      </ul></div>
+    </div>
+  </div></details>
+
+  <details class="proj" id="p7"><summary>API REST de Odoo (reunión con sistemas) <span class="badge b-pend">PENDIENTE · 10%</span></summary><div class="body">
+    <p>Validar la conexión de agentes de IA a Odoo (API REST) con el equipo de sistemas, en el contexto de la migración v15 → v18 (~4 meses). Es la llave para eliminar los exports manuales.</p>
+    <div class="cols2">
+      <div><p class="ph">Tareas</p><ul class="tasks">
+        <li class="todo">▢ Agendar la reunión técnica con sistemas (Francisco organiza)</li>
+        <li class="todo">▢ Enviar documentación del API REST por correo (David)</li>
+        <li class="todo">▢ Obtener URL + API key del Odoo del cliente</li>
+      </ul></div>
+      <div><p class="ph">Evolución</p><ul class="tl">
+        <li><b>30-jun</b> · Acuerdo de coordinar la sesión técnica.</li>
+        <li><b>09-jul</b> · Contexto reconfirmado; sin avance del API.</li>
+      </ul></div>
+    </div>
+  </div></details>
+
+  <details class="proj" id="p8"><summary>Sitios web (Ana y Francisco) <span class="badge b-done">HECHO · DESPLIEGUE POSPUESTO</span></summary><div class="body">
+    <p>Sitios generados con IA: el de Ana funcional (WhatsApp, GitHub) y la propuesta para Construgypsum (<a href="https://daviddlr-lab.github.io/construgypsum-website/index.html" target="_blank" rel="noopener">ver demo publicada</a>). El lanzamiento espera a que termine la fase de automatización.</p>
+    <ul class="tl">
+      <li><b>07-jul</b> · Demo de ambos sitios; se prioriza la automatización antes del despliegue.</li>
+    </ul>
+  </div></details>
+
+  <details class="proj" id="p9"><summary>Simulación logística de transferencias (Katherine) <span class="badge b-block">BLOQUEADO · 40%</span></summary><div class="body">
+    <p>Simulacro sin mover mercadería del proceso de transferencia a Challuabamba (costos, tiempos, viabilidad); pedido directo de Francisco. Panchito da seguimiento.</p>
+    <div class="cols2">
+      <div><p class="ph">Tareas</p><ul class="tasks">
+        <li class="ok">✔ Presentación de Panchito como cabeza del proyecto de IA</li>
+        <li class="ok">✔ Reporte de transferencias enviado a Katherine</li>
+        <li class="todo">▢ Recibir su análisis de costos, tiempos y proceso</li>
+        <li class="todo">▢ Consultar costos con RR. HH.</li>
+      </ul></div>
+      <div><p class="ph">Evolución</p><ul class="tl">
+        <li><b>13-jul</b> · Se acuerda contactar a la coordinadora de logística.</li>
+        <li><b>14-jul</b> · Instrucción de llamarla y enviarle el simulacro.</li>
+        <li><b>15-jul</b> · Contacto hecho, reporte enviado.</li>
+        <li><b>16-jul</b> · Sin respuesta aún; presionar la colaboración.</li>
+      </ul></div>
+    </div>
+  </div></details>
+
+  <details class="proj" id="p10"><summary>Canal de comunicación (WhatsApp a tres vías, bullet points) <span class="badge b-done">HECHO · EN USO</span></summary><div class="body">
+    <p>Chat a tres vías (Panchito, Francisco, David) más grupo de cuatro con John; estándar de reportar en bullet points concisos.</p>
+    <ul class="tl">
+      <li><b>08-jul</b> · Se acuerdan el three-way chat y los bullet points.</li>
+      <li><b>09-jul</b> · Grupo con John.</li>
+      <li><b>14/15-jul</b> · Se suma el flujo con Mayra (SharePoint).</li>
+    </ul>
+  </div></details>
+</div></section>
+
+<section id="arquitectura"><div class="wrap">
+  <h2>Arquitectura del proyecto</h2>
+  <p class="sub">El antes y el después que estamos construyendo. Basado en el <a href="https://docs.google.com/presentation/d/1vfdYK3-TW29FTN1GHhl6thdlvfcy10R8pJthrSEmHsU/edit" target="_blank" rel="noopener">Discovery Visual Brief (30-jun)</a>.</p>
+
+  <div class="archtoggle">
+    <button id="btnHoy" class="on" onclick="arch('hoy')">Hoy</button>
+    <button id="btnFut" onclick="arch('futuro')">Futuro</button>
+  </div>
+
+  <div class="arch" id="archHoy">
+    <h3>Cómo funciona hoy: todo pasa por Francisco</h3>
+    <p class="sub2">ESTADO ACTUAL · las líneas punteadas marcan fricción o trabajo manual</p>
+    <div class="arow a1"><div class="abox people">Francisco (GM)<span>+ jefe de ventas en funciones · dos sombreros</span></div></div>
+    <div class="aconn bad">⌄ ⌄ ⌄ consultas manuales ⌄ ⌄ ⌄</div>
+    <div class="arow a3">
+      <div class="abox">Odoo CRM<span>sub-llenado, sin etapa "perdido"</span></div>
+      <div class="abox">GPS (Claro)<span>ruta + una foto de visita</span></div>
+      <div class="abox">Buffer Excel<span>Panchito revisa a mano</span></div>
+    </div>
+    <div class="aconn bad">⌃ el insight rara vez regresa ⌃</div>
+    <div class="arow a1"><div class="abox people">Vendedores de campo<span>en WhatsApp, sin reporte de vuelta</span></div></div>
+    <div class="pills">
+      <span class="pill">✕ catálogo sub-vendido</span>
+      <span class="pill">✕ contacto equivocado</span>
+      <span class="pill">✕ inventario detectado tarde</span>
+    </div>
+  </div>
+
+  <div class="arch" id="archFuturo" style="display:none">
+    <h3>Cómo podría funcionar: agentes trabajando sobre Odoo</h3>
+    <p class="sub2">FUTURO POSIBLE · agentes en verde, flujos vivos en línea continua</p>
+    <div class="arow a3">
+      <div class="abox agent">Agente WhatsApp de campo<span>preguntas post-visita a los vendedores</span></div>
+      <div class="abox agent">AI Head of Sales<span>cuota, coaching, cobranza</span></div>
+      <div class="abox agent">Agente de Inventario<span>vigila stock vs. velocidad de venta</span></div>
+    </div>
+    <div class="aconn good">⌄ ⌄ ⌄ lectura y escritura continua ⌄ ⌄ ⌄</div>
+    <div class="arow a3">
+      <div class="abox people">Vendedores<span>ida y vuelta por WhatsApp Web</span></div>
+      <div class="abox">Odoo (v15 → v18)<span>+ capa REST API (John)</span></div>
+      <div class="abox people">Panchito<span>dueño y afinador de los agentes</span></div>
+    </div>
+    <div class="aconn good">⌄</div>
+    <div class="arow a1"><div class="abox people">Francisco → solo GM<span>la IA cubre el rol de jefe de ventas</span></div></div>
+    <div class="pills">
+      <span class="pill ok">✓ cada visita registrada</span>
+      <span class="pill ok">✓ productos correctos ofrecidos</span>
+      <span class="pill ok">✓ stock pedido a tiempo</span>
+    </div>
+  </div>
+</div></section>
+
+<section id="analisis"><div class="wrap">
+  <h2>El negocio en cifras</h2>
+  <p class="sub">Extractos del <a href="https://daviddlr-lab.github.io/construgypsum-website/analisis-inventario/" target="_blank" rel="noopener">Diagnóstico de Inventario y Rotación (07-jul-2026)</a> — 13 meses de historial, 1,813 SKUs activos, 3 bodegas.</p>
+  <div class="snips">
+    <div class="snip"><span class="t">Producto hueso</span><b>$239K</b><p>666 SKUs con stock y cero ventas en 13 meses. Los dos grandes: lana de vidrio Etex ($57K) y la línea Yale ($45K, 95% de su catálogo sin ventas).</p></div>
+    <div class="snip"><span class="t">Productos estrella</span><b>115 SKUs = 80%</b><p>El 10% del catálogo genera el 80% de la venta. Gyplac ½" + Proteja P7 aportan $294K/mes (22% del total). 7 de los 15 más vendidos están en riesgo de quiebre.</p></div>
+    <div class="snip"><span class="t">Capital mal asignado</span><b>$521K</b><p>34% del inventario no produce ventas (hueso + exceso &gt;200%), mientras Construsec opera con 0.31 meses de cobertura y Yale acumula 88.6.</p></div>
+    <div class="snip"><span class="t">Venta mensual</span><b>$1.35M</b><p>Contra $1.52M de capital en inventario: 1.13 meses de cobertura global. El objetivo del negocio es operar entre 1 y 2 meses por producto.</p></div>
+  </div>
+  <div class="decisions">
+    <h3>Decisiones sugeridas por el análisis</h3>
+    <ol>
+      <li><b>Blindar la clase A:</b> cobertura mínima de 1 mes en los 115 SKUs que hacen el 80% de la venta.</li>
+      <li><b>Liquidar el top-10 del hueso ($79K):</b> empezar por devolución de lana Frescasa a Etex.</li>
+      <li><b>Decidir Yale:</b> relanzar, devolver o liquidar — $45K parados con 88.6 meses de cobertura.</li>
+      <li><b>Congelar compras</b> en los 407 SKUs con sobre-stock &gt;200% hasta bajar de 2 meses.</li>
+      <li><b>Ciclo mensual:</b> buffer → reporte → decisión, con metas medibles (hueso −50% en 6 meses).</li>
+    </ol>
+  </div>
+</div></section>
+
+<section id="competencia"><div class="wrap">
+  <h2>Competencia</h2>
+  <p class="sub">Los tres jugadores nacionales más relevantes del sistema de construcción en seco. Análisis rápido con información pública de sus sitios — para validar y profundizar con el equipo.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>🏭 SICON · <a href="https://siconecuador.com/" target="_blank" rel="noopener">siconecuador.com</a></h3>
+      <p style="font-size:12.5px;color:var(--muted)">27 años · autodeclarado líder con 52% del mercado nacional del sistema liviano en seco · 36 sucursales · fábrica de estructura galvanizada · +200 distribuidores.</p>
+      <div class="swot">
+        <div class="sq f"><b>Fortalezas</b>Escala nacional, fábrica propia, red de distribución enorme.</div>
+        <div class="sq d"><b>Debilidades</b>Modelo masivo: menos cercanía y servicio técnico personalizado en el Austro.</div>
+        <div class="sq o"><b>Oportunidades</b>Seguir absorbiendo distribuidores regionales pequeños.</div>
+        <div class="sq a"><b>Amenazas</b>Especialistas regionales con asesoría fuerte y logística local (Construgypsum).</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📦 IMPROGYP · <a href="https://improgyp.com.ec/ec/" target="_blank" rel="noopener">improgyp.com.ec</a></h3>
+      <p style="font-size:12.5px;color:var(--muted)">+12 años importando y distribuyendo materiales drywall y steel frame a nivel nacional; se posiciona como el proveedor "más completo" e incluye marcas como Knauf.</p>
+      <div class="swot">
+        <div class="sq f"><b>Fortalezas</b>Catálogo amplio, importación directa, presencia e-commerce.</div>
+        <div class="sq d"><b>Debilidades</b>Menor trayectoria que los líderes; marca menos fuerte en el Austro.</div>
+        <div class="sq o"><b>Oportunidades</b>Crecer en venta en línea y proyectos steel frame.</div>
+        <div class="sq a"><b>Amenazas</b>Guerra de precios de importadores y aranceles a materiales.</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🔩 PROVIND · <a href="https://www.provind.com.ec/" target="_blank" rel="noopener">provind.com.ec</a></h3>
+      <p style="font-size:12.5px;color:var(--muted)">Fábrica de perfiles para gypsum y proveedor del sistema drywall / steel framing; importador autorizado de KNAUF.</p>
+      <div class="swot">
+        <div class="sq f"><b>Fortalezas</b>Fabricación propia de perfiles; respaldo de marca KNAUF.</div>
+        <div class="sq d"><b>Debilidades</b>Foco en perfiles/sistema: catálogo menos diversificado (sin FV, Yale, etc.).</div>
+        <div class="sq o"><b>Oportunidades</b>Integración vertical: precio competitivo en perfiles.</div>
+        <div class="sq a"><b>Amenazas</b>Acero importado y competidores con fábricas más grandes (SICON).</div>
+      </div>
+    </div>
+  </div>
+  <p class="note">Ventaja diferencial de Construgypsum a defender: 22 años en el Austro, representación multi-línea (Etex, Plastigama, FV, Intaco, Acesco, Yale…), relación directa con ferreterías/distribuidores (80% del negocio) y ahora una capa de IA sobre inventario y ventas que ninguno de los tres tiene.</p>
+</div></section>
+
+<section id="equipo"><div class="wrap">
+  <h2>Equipo del proyecto</h2>
+  <p class="sub">Quién es quién en esta implementación.</p>
+  <div class="team">
+    <div class="member"><div class="avatar">F</div><div><b>Francisco Toral</b><span>Gerente General, Construgypsum · decisor final y jefe de ventas en funciones</span></div></div>
+    <div class="member"><div class="avatar">P</div><div><b>Panchito (Francisco Toral h.)</b><span>Jefe de bodega · líder interno del proyecto de IA, dueño de skills y reportes</span></div></div>
+    <div class="member"><div class="avatar">M</div><div><b>Mayra</b><span>Departamento de Compras · Estado Proveedor y Excel de compras en SharePoint</span></div></div>
+    <div class="member"><div class="avatar">K</div><div><b>Katherine</b><span>Logística entre bodegas · simulacro de transferencias a Challuabamba</span></div></div>
+    <div class="member"><div class="avatar cc">D</div><div><b>David De los Reyes</b><span>Cascade Clarity · integración, automatización y capacitación</span></div></div>
+    <div class="member"><div class="avatar cc">J</div><div><b>John Cuellar</b><span>Cascade Clarity · backend Odoo, capa REST API y agentes de ventas</span></div></div>
+  </div>
+</div></section>
+
+<section id="roadmap"><div class="wrap">
+  <h2>Roadmap</h2>
+  <p class="sub">Lo que está en marcha, lo que sigue y hacia dónde va el proyecto.</p>
+  <div class="road">
+    <div class="rcol r1"><h4>Ahora · en marcha</h4><ul>
+      <li>Reportes programados a las 9:30<span>listos antes de la reunión diaria de las 10:00</span></li>
+      <li>Conectores Microsoft 365 + Exa<span>acceso directo a SharePoint desde Cowork</span></li>
+      <li>Prueba de la skill producto hueso<span>con el buffer real de la semana</span></li>
+      <li>Simulacro logístico con Katherine<span>costos y tiempos de transferencia</span></li>
+    </ul></div>
+    <div class="rcol r2"><h4>Siguiente · 2-4 semanas</h4><ul>
+      <li>Lectura en vivo del Excel de compras<span>el reporte se alimenta solo desde SharePoint</span></li>
+      <li>Historial de rotación en los reportes<span>anticipar quiebres pese a sobrestock proyectado</span></li>
+      <li>Alertas de llegadas atrasadas<span>avisar cuando un backorder ya debió llegar</span></li>
+      <li>Propuesta formal de ventas (John)<span>proof of concept del agente WhatsApp</span></li>
+    </ul></div>
+    <div class="rcol r3"><h4>Más adelante</h4><ul>
+      <li>API REST de Odoo<span>adiós a los exports manuales diarios</span></li>
+      <li>Agentes de ventas sobre Odoo + WhatsApp<span>la arquitectura "Futuro" completa</span></li>
+      <li>Dashboard con datos en vivo<span>esta página conectada directo al inventario</span></li>
+      <li>Despliegue del sitio web nuevo<span>catálogo + cotización + leads a Odoo CRM</span></li>
+    </ul></div>
+  </div>
+  <div class="cta">
+    <div>
+      <b>¿Necesitas un reporte nuevo o una skill a la medida?</b>
+      <p>Describe qué quieres ver (qué datos, con qué frecuencia, en qué formato) y lo convertimos en una skill instalable — como las de abastecimiento, llegadas y hueso.</p>
+    </div>
+    <a href="mailto:david@cascadeclarity.ai?subject=Solicitud%20de%20skill%20%C2%B7%20Construgypsum&body=Qu%C3%A9%20necesito%3A%0AConta%20qu%C3%A9%20datos%2C%20frecuencia%20y%20formato%3A%0A">Solicitar una skill →</a>
+  </div>
+</div></section>
+
+<section id="reuniones"><div class="wrap">
+  <h2>Reuniones de trabajo</h2>
+  <p class="sub">Once sesiones entre el 30 de junio y el 16 de julio de 2026 (hora de Ecuador). Cada título abre las notas y transcripción de Gemini en Google Drive.</p>
+  <div style="overflow-x:auto">
+  <table>
+    <tr><th>Fecha (EC)</th><th>Reunión</th><th>Dur.</th><th>Qué se trabajó</th></tr>
+    <tr><td class="f">Lun 30-jun · 11:00</td><td><a href="https://docs.google.com/document/d/1g7JOP29Ki_ZbvQQneuWiwHvEtqJMOMdVdkMTrWaIp_A/edit" target="_blank" rel="noopener">Discovery Call</a></td><td class="dur">1:09:39</td><td>Primera sesión de descubrimiento: seguimiento comercial deficiente, CRM Odoo (v15→v18) e inventario de Challuabamba. Se definen dos tickets (CRM/ventas e inventario) y presupuesto de USD 20/mes.</td></tr>
+    <tr><td class="f">Vie 03-jul · 14:31</td><td><a href="https://docs.google.com/document/d/1HHz8GzchYWwDkKUa1aWlkGzpcjIwAa6xPixL12WLsUM/edit" target="_blank" rel="noopener">AI Workshop: Gestión Inventario / Bodega Chaullabamba</a></td><td class="dur">1:38:28</td><td>Instalación de Claude y suscripción pro (RUC aprobado por teléfono). Carga de exports de Odoo, parámetros del análisis y primer consolidado (720 entradas). Nace la idea de la skill.</td></tr>
+    <tr><td class="f">Mar 07-jul · 17:31</td><td><a href="https://docs.google.com/document/d/1nTkYr5i-NIea1tZfW-pP9-2H9SUhKFH2E0o-7t_dWBA/edit" target="_blank" rel="noopener">Discovery Call (con Francisco)</a></td><td class="dur">1:19:36</td><td>Revisión con Francisco del flujo comprar/transferir, memoria del producto, productos padre/hijo y logística. Se acuerda compartir 13 meses de historial. Demo de los sitios web; despliegue pospuesto.</td></tr>
+    <tr><td class="f">Mié 08-jul · 09:01</td><td><a href="https://docs.google.com/document/d/1fo19KmGIYjgX4QwdcMpgGEKt38SNMpMJ5XRAlS1bGtY/edit" target="_blank" rel="noopener">Panchito &amp; David: Claude Skill</a></td><td class="dur">1:49:35</td><td>Taller de skills y estructura de reportes (transcripción defectuosa por audio). Se acuerdan el chat a tres vías por WhatsApp y los reportes en bullet points.</td></tr>
+    <tr><td class="f">Jue 09-jul · 12:58</td><td><a href="https://docs.google.com/document/d/1VlEx-MiPfUTEaivpF2xlDo2rp3cMDB4ZGTWymQsb9_8/edit" target="_blank" rel="noopener">John, Francisco, Panchito &amp; David</a></td><td class="dur">0:48:44</td><td>Discovery de automatización de ventas con John Cuellar: visitas por WhatsApp, Odoo v15→v18, PowerBI manual. John queda en propuesta formal y proof of concept; David crea el canal conjunto.</td></tr>
+    <tr><td class="f">Jue 09-jul · 13:49</td><td><a href="https://docs.google.com/document/d/1xgq8R1aglhNxrcRHbtggbWSRQGAzuVuUvr9JFsUKigo/edit" target="_blank" rel="noopener">John, Francisco, Panchito &amp; David (parte 2)</a></td><td class="dur">0:00:11</td><td>Sesión residual de 11 segundos, sin contenido de trabajo.</td></tr>
+    <tr><td class="f">Vie 10-jul · 12:15</td><td><a href="https://docs.google.com/document/d/1QC1SQBN_lFNuezjJfYZdaXTANqxic5Qz9WRTlRSgE1s/edit" target="_blank" rel="noopener">Automation Progress &amp; Blockers</a></td><td class="dur">0:56:48</td><td>Columna Estado Proveedor, filtro a crítico/alto y "15 motores del negocio". Francisco confirma por teléfono la regla de sustitutos y la transferencia total a Challuabamba salvo falta de espacio.</td></tr>
+    <tr><td class="f">Lun 13-jul · 09:59</td><td><a href="https://docs.google.com/document/d/1jnr_qgpqUfVMyYGINAxeJsZzBN-tF-ez8Lq8Y6fUpQA/edit" target="_blank" rel="noopener">Report Automation Workshop</a></td><td class="dur">1:29:56</td><td>Estandarización: sobrestock en porcentaje, documento único de reglas, fechas de llegada en Estado Proveedor, PDF "filtrado" y unificación con fechas de compras. Se agregan líneas faltantes.</td></tr>
+    <tr><td class="f">Mar 14-jul · 10:10</td><td><a href="https://docs.google.com/document/d/1UVfQ_bSMJs2NNOOeyO41vZpmqIb7SNNQWNxPrEWX_Sg/edit" target="_blank" rel="noopener">David &amp; Panchito Automation Workshop</a></td><td class="dur">0:45:55</td><td>Reporte con fechas de llegada/fabricación y tipo de rotación (bajo pedido). Decisión de centralizar el Excel de compras en SharePoint; instrucción de llamar a Katherine para el simulacro de transferencia.</td></tr>
+    <tr><td class="f">Mié 15-jul · 10:32</td><td><a href="https://docs.google.com/document/d/1auzqVr9dV3McW6WMisG8B3HFoPl-ZzUV5doBVHsaDwQ/edit" target="_blank" rel="noopener">AI Workshop: material purchase report &amp; logistics</a></td><td class="dur">0:50:49</td><td>Documento de compras migrado a SharePoint (compartido con Mayra). Se define el reporte semanal de llegadas en Word. El proyecto de ventas sigue en fase de propuesta.</td></tr>
+    <tr><td class="f">Jue 16-jul · 09:29</td><td><a href="https://docs.google.com/document/d/1pMUDb0sbWaQ1byOj140ds3LL6wQii6Eo2evjK-ytL4I/edit" target="_blank" rel="noopener">AI Workshop</a></td><td class="dur">0:28:42</td><td>Entrega de dos skills nuevas (llegadas y hueso), conectores Microsoft 365/Exa en configuración (login pendiente) y plan de reportes programados a las 9:30. Katherine sin responder aún.</td></tr>
+    <tr class="total"><td>TOTAL</td><td>11 reuniones (10 con contenido)</td><td>11:18:23</td><td>Promedio ~1 h 8 m por sesión efectiva · cadencia diaria desde el 10 de julio</td></tr>
+  </table>
+  </div>
+  <p class="note">La duración corresponde al rango de la transcripción. En los talleres, la cuenta "Francisco Toral" corresponde a Panchito; Francisco participó directamente el 07 y 09-jul, y por teléfono el 03 y 10-jul. Detalle completo en <a href="reuniones/Reuniones_Construgypsum.md">reuniones/Reuniones_Construgypsum.md</a>.</p>
+</div></section>
 
 <section id="recursos"><div class="wrap">
   <h2>Recursos</h2>
-  <p class="sub">Catálogo de la carpeta, agrupado por tema. Actualizado al 16 de julio de 2026 · <a href="Construgypsum_Resumen_Recursos.pdf">ver resumen en PDF</a> · <a href="Construgypsum_Resumen_Recursos.docx">Word</a></p>
+  <p class="sub">Catálogo de la carpeta del proyecto, por tema · <a href="Construgypsum_Resumen_Recursos.pdf">resumen en PDF</a> · <a href="Construgypsum_Resumen_Recursos.docx">Word</a></p>
   <div class="grid">
     <div class="card"><h3>📄 Documentos</h3><ul>
-      <li><a href="documentos/Plan%20Manejo%20Inventario%20v2%20Construgypsum.docx">Plan Manejo Inventario v2 (ES)</a><span class="d">Plan de manejo de inventario para Francisco y gerencia (07-jul).</span></li>
+      <li><a href="https://docs.google.com/document/d/1KRNCkW1i98pPnSZtFk7nN4w5Led7VXXCOUDpST2fDrY/edit" target="_blank" rel="noopener">Plan Manejo Inventario v2 (ES)</a><span class="d">Plan para Francisco y gerencia (07-jul) · Drive. <a href="documentos/Plan%20Manejo%20Inventario%20v2%20Construgypsum.docx">Copia local</a>.</span></li>
       <li><a href="documentos/Inventory%20Management%20Plan%20v2%20Construgypsum.docx">Inventory Management Plan v2 (EN)</a><span class="d">Versión en inglés del plan v2.</span></li>
       <li><a href="documentos/Inventory%20Management%20Proposal.docx">Inventory Management Proposal</a><span class="d">Propuesta inicial del servicio (inglés).</span></li>
       <li><a href="https://drive.google.com/file/d/1Dbv6tXhO0yDeCZOfMxkq5OAAvcl4B1E3/view" target="_blank" rel="noopener">Prompt · Propuesta Inventario v2</a><span class="d">Prompt con el que se generó la propuesta v2 (Drive).</span></li>
-      <li><a href="documentos/Auditoria_Web_Construgypsum.pptx">Auditoría Web Construgypsum (PPTX)</a><span class="d">Diagnóstico del sitio actual: 3,1/10, hallazgos y plan de mejora.</span></li>
+      <li><a href="https://docs.google.com/presentation/d/1zd6pLr5qdEul9Whbla0fOL3XmQeTT3PY7k4Jo1oPdmY/edit" target="_blank" rel="noopener">Auditoría Web Construgypsum</a><span class="d">Diagnóstico del sitio actual: 3,1/10, hallazgos y plan de mejora (Slides). <a href="documentos/Auditoria_Web_Construgypsum.pptx">PPTX local</a>.</span></li>
     </ul></div>
     <div class="card"><h3>📊 Reportes</h3><ul>
-      <li><a href="https://daviddlr-lab.github.io/construgypsum-website/analisis-inventario/" target="_blank" rel="noopener">Análisis Inventario y Rotación (07-jul)</a><span class="d">Diagnóstico ejecutivo: buffer 13 meses, hueso y exceso, con gráficos. <a href="reportes/Analisis%20Inventario%20y%20Rotacion%20Construgypsum%2007-07-2026.html">Copia local</a>.</span></li>
+      <li><a href="https://daviddlr-lab.github.io/construgypsum-website/analisis-inventario/" target="_blank" rel="noopener">Análisis Inventario y Rotación (07-jul)</a><span class="d">Diagnóstico ejecutivo publicado. <a href="reportes/Analisis%20Inventario%20y%20Rotacion%20Construgypsum%2007-07-2026.html">Copia local</a>.</span></li>
       <li><a href="reportes/Reporte%20Abastecimiento%20Challuabamba%2007-07-2026.xlsx">Reporte Abastecimiento Challuabamba (07-jul)</a><span class="d">Consolidado comprar / transferir de las 11 líneas.</span></li>
       <li><a href="reportes/Reportes%2006-07-2026/Reporte%20Abastecimiento%20CONSOLIDADO%2006-07-2026.xlsx">Reporte CONSOLIDADO (06-jul)</a><span class="d">Primera corrida del reporte de abastecimiento.</span></li>
       <li><a href="reportes/Reportes%2006-07-2026/Reporte%20Abastecimiento%20Yale%2006-07-2026.xlsx">Reporte Yale (06-jul)</a><span class="d">Línea Yale: 138 SKUs, todo el stock en Solano.</span></li>
       <li><a href="reportes/Reportes%2006-07-2026/Reporte%20Hueso%20y%20Sobre-stock%2006-07-2026.xlsx">Reporte Hueso y Sobre-stock (06-jul)</a><span class="d">Inventario inmovilizado y exceso sobre el objetivo 200%.</span></li>
     </ul></div>
     <div class="card"><h3>⚙️ Skills de Claude</h3><ul>
-      <li><a href="https://drive.google.com/file/d/1G643AGMV41vQzFCXMP1PfcexOQjqgeXH/view" target="_blank" rel="noopener">reporte-abastecimiento-bodega-challuabamba</a><span class="d">Skill vigente: un Excel consolidado (comprar + transferir). Drive · <a href="skills/reporte-abastecimiento-bodega-challuabamba.skill">local</a>.</span></li>
+      <li><a href="https://drive.google.com/file/d/1G643AGMV41vQzFCXMP1PfcexOQjqgeXH/view" target="_blank" rel="noopener">reporte-abastecimiento-bodega-challuabamba</a><span class="d">Skill vigente: un Excel consolidado. Drive · <a href="skills/reporte-abastecimiento-bodega-challuabamba.skill">local</a>.</span></li>
       <li><a href="skills/reporte-fechas-de-llegada.skill">reporte-fechas-de-llegada</a><span class="d">Reporte semanal de llegadas en Word (cruza proveedor × inventario).</span></li>
       <li><a href="https://drive.google.com/file/d/1mzmnueN8VYEYXdtRndJ7eiPQNlYwJarx/view" target="_blank" rel="noopener">reporte-producto-hueso</a><span class="d">Inventario inmovilizado: capital parado por línea. Drive · <a href="skills/reporte-producto-hueso.skill">local</a>.</span></li>
-      <li><a href="https://drive.google.com/file/d/1lKy3fTnVhYQOUvqnJ8BBvImTEm6r65n1/view" target="_blank" rel="noopener">reporte-abastecimiento</a><span class="d">Versión anterior (obsoleta, se conserva como respaldo). Drive · <a href="skills/reporte-abastecimiento.skill">local</a>.</span></li>
+      <li><a href="https://drive.google.com/file/d/1lKy3fTnVhYQOUvqnJ8BBvImTEm6r65n1/view" target="_blank" rel="noopener">reporte-abastecimiento</a><span class="d">Versión anterior (obsoleta, respaldo). Drive · <a href="skills/reporte-abastecimiento.skill">local</a>.</span></li>
     </ul></div>
     <div class="card"><h3>🌐 Sitio web propuesto</h3><ul>
       <li><a href="https://daviddlr-lab.github.io/construgypsum-website/index.html" target="_blank" rel="noopener">website-propuesta/ (ver demo publicada)</a><span class="d">Sitio nuevo en HTML/CSS/JS: catálogo, cotización y páginas institucionales. <a href="website-propuesta/index.html">Copia local</a>.</span></li>
@@ -124,154 +578,8 @@
   </div>
 </div></section>
 
-<section id="reuniones"><div class="wrap">
-  <h2>Reuniones con Construgypsum</h2>
-  <p class="sub">Once sesiones entre el 30 de junio y el 16 de julio de 2026 (hora de Ecuador). Cada título abre las notas y transcripción de Gemini en Google Drive.</p>
-  <div style="overflow-x:auto">
-  <table>
-    <tr><th>Fecha (EC)</th><th>Reunión</th><th>Dur.</th><th>Qué se trabajó</th></tr>
-    <tr><td class="f">Lun 30-jun · 11:00</td><td><a href="https://docs.google.com/document/d/1g7JOP29Ki_ZbvQQneuWiwHvEtqJMOMdVdkMTrWaIp_A/edit" target="_blank" rel="noopener">Discovery Call</a></td><td class="dur">1:09:39</td><td>Primera sesión de descubrimiento: seguimiento comercial deficiente, CRM Odoo (v15→v18) e inventario de Challuabamba. Se definen dos tickets (CRM/ventas e inventario) y presupuesto de USD 20/mes.</td></tr>
-    <tr><td class="f">Vie 03-jul · 14:31</td><td><a href="https://docs.google.com/document/d/1HHz8GzchYWwDkKUa1aWlkGzpcjIwAa6xPixL12WLsUM/edit" target="_blank" rel="noopener">AI Workshop: Gestión Inventario / Bodega Chaullabamba</a></td><td class="dur">1:38:28</td><td>Instalación de Claude y suscripción pro (RUC aprobado por teléfono). Carga de exports de Odoo, parámetros del análisis y primer consolidado (720 entradas). Nace la idea de la skill.</td></tr>
-    <tr><td class="f">Mar 07-jul · 17:31</td><td><a href="https://docs.google.com/document/d/1nTkYr5i-NIea1tZfW-pP9-2H9SUhKFH2E0o-7t_dWBA/edit" target="_blank" rel="noopener">Discovery Call (con Francisco)</a></td><td class="dur">1:19:36</td><td>Revisión con Francisco del flujo comprar/transferir, memoria del producto, productos padre/hijo y logística. Se acuerda compartir 13 meses de historial. Demo de los sitios web; despliegue pospuesto.</td></tr>
-    <tr><td class="f">Mié 08-jul · 09:01</td><td><a href="https://docs.google.com/document/d/1fo19KmGIYjgX4QwdcMpgGEKt38SNMpMJ5XRAlS1bGtY/edit" target="_blank" rel="noopener">Panchito &amp; David: Claude Skill</a></td><td class="dur">1:49:35</td><td>Taller de skills y estructura de reportes (transcripción defectuosa por audio). Se acuerdan el chat a tres vías por WhatsApp y los reportes en bullet points.</td></tr>
-    <tr><td class="f">Jue 09-jul · 12:58</td><td><a href="https://docs.google.com/document/d/1VlEx-MiPfUTEaivpF2xlDo2rp3cMDB4ZGTWymQsb9_8/edit" target="_blank" rel="noopener">John, Francisco, Panchito &amp; David</a></td><td class="dur">0:48:44</td><td>Discovery de automatización de ventas con John Cuellar: visitas por WhatsApp, Odoo v15→v18, PowerBI manual. John queda en propuesta formal y proof of concept; David crea el canal conjunto.</td></tr>
-    <tr><td class="f">Jue 09-jul · 13:49</td><td><a href="https://docs.google.com/document/d/1xgq8R1aglhNxrcRHbtggbWSRQGAzuVuUvr9JFsUKigo/edit" target="_blank" rel="noopener">John, Francisco, Panchito &amp; David (parte 2)</a></td><td class="dur">0:00:11</td><td>Sesión residual de 11 segundos, sin contenido de trabajo.</td></tr>
-    <tr><td class="f">Vie 10-jul · 12:15</td><td><a href="https://docs.google.com/document/d/1QC1SQBN_lFNuezjJfYZdaXTANqxic5Qz9WRTlRSgE1s/edit" target="_blank" rel="noopener">Automation Progress &amp; Blockers</a></td><td class="dur">0:56:48</td><td>Columna Estado Proveedor, filtro a crítico/alto y "15 motores del negocio". Tupa confirma por teléfono la regla de sustitutos y la transferencia total a Challuabamba salvo falta de espacio.</td></tr>
-    <tr><td class="f">Lun 13-jul · 09:59</td><td><a href="https://docs.google.com/document/d/1jnr_qgpqUfVMyYGINAxeJsZzBN-tF-ez8Lq8Y6fUpQA/edit" target="_blank" rel="noopener">Report Automation Workshop</a></td><td class="dur">1:29:56</td><td>Estandarización: sobrestock en porcentaje, documento único de reglas, fechas de llegada en Estado Proveedor, PDF "filtrado" y unificación con fechas de compras. Se agregan líneas faltantes.</td></tr>
-    <tr><td class="f">Mar 14-jul · 10:10</td><td><a href="https://docs.google.com/document/d/1UVfQ_bSMJs2NNOOeyO41vZpmqIb7SNNQWNxPrEWX_Sg/edit" target="_blank" rel="noopener">David &amp; Panchito Automation Workshop</a></td><td class="dur">0:45:55</td><td>Reporte con fechas de llegada/fabricación y tipo de rotación (bajo pedido). Decisión de centralizar el Excel de compras en SharePoint; instrucción de llamar a Catherine para el simulacro de transferencia.</td></tr>
-    <tr><td class="f">Mié 15-jul · 10:32</td><td><a href="https://docs.google.com/document/d/1auzqVr9dV3McW6WMisG8B3HFoPl-ZzUV5doBVHsaDwQ/edit" target="_blank" rel="noopener">AI Workshop: material purchase report &amp; logistics</a></td><td class="dur">0:50:49</td><td>Documento de compras migrado a SharePoint (compartido con Mayira). Se define el reporte semanal de llegadas en Word. El proyecto de ventas de Tupa sigue en fase de propuesta.</td></tr>
-    <tr><td class="f">Jue 16-jul · 09:29</td><td><a href="https://docs.google.com/document/d/1pMUDb0sbWaQ1byOj140ds3LL6wQii6Eo2evjK-ytL4I/edit" target="_blank" rel="noopener">AI Workshop</a></td><td class="dur">0:28:42</td><td>Entrega de dos skills nuevas (llegadas y hueso), conectores Microsoft 365/Exa en configuración (login pendiente) y plan de reportes programados a las 9:30. Catherine sin responder aún.</td></tr>
-  </table>
-  </div>
-  <p class="note">La duración corresponde al rango de la transcripción. En los talleres, la cuenta "Francisco Toral" corresponde a Panchito; Francisco (Tupa) participó directamente el 07 y 09-jul, y por teléfono el 03 y 10-jul.</p>
-</div></section>
-
-<section id="proyectos"><div class="wrap">
-  <h2>Estado del proyecto y proyectos en curso</h2>
-  <p class="sub">Al 16 de julio de 2026, a partir de las reuniones. Haz clic en una tarjeta del tablero para ver su evolución.</p>
-
-  <div class="kanban">
-    <div class="kcol k-done"><h4>✔ Hecho</h4>
-      <div class="kcard" data-p="p10">Canal WhatsApp + bullet points<span class="st">En uso diario</span></div>
-      <div class="kcard" data-p="p8">Sitios web (Ana y Francisco)<span class="st">Despliegue pospuesto</span></div>
-    </div>
-    <div class="kcol k-prog"><h4>▶ En curso</h4>
-      <div class="kcard" data-p="p1">Reporte abastecimiento Challuabamba<span class="st">Skill vigente · ejecución programada en camino</span></div>
-      <div class="kcard" data-p="p2">Skills de Claude / Cowork<span class="st">Conectores M365/Exa en configuración</span></div>
-      <div class="kcard" data-p="p3">Reporte fechas de llegada<span class="st">Skill entregada 16-jul · en pruebas</span></div>
-      <div class="kcard" data-p="p5">Estado Proveedor + SharePoint<span class="st">Doc compartido con Mayira</span></div>
-    </div>
-    <div class="kcol k-block"><h4>⏸ Bloqueado</h4>
-      <div class="kcard" data-p="p9">Simulación logística (Catherine)<span class="st">Esperando su análisis</span></div>
-    </div>
-    <div class="kcol k-pend"><h4>◻ Pendiente</h4>
-      <div class="kcard" data-p="p4">Reporte producto hueso<span class="st">Skill entregada · falta probar</span></div>
-      <div class="kcard" data-p="p6">Ventas Odoo + WhatsApp (John)<span class="st">En fase de propuesta</span></div>
-      <div class="kcard" data-p="p7">API REST de Odoo<span class="st">Reunión con sistemas sin agendar</span></div>
-    </div>
-  </div>
-
-  <details class="proj" id="p1"><summary>Reporte de abastecimiento Bodega Challuabamba <span class="badge b-prog">EN CURSO</span></summary><div class="body">
-    <p>Reporte automatizado a partir de los exports de Odoo: qué comprar y qué transferir a Challuabamba, con prioridades (crítico/alto), sustitutos, motivo y Estado Proveedor. Panchito lo genera y envía a compras; David mantiene la skill.</p>
-    <ul class="tl">
-      <li><b>30-jun</b> · Se define el ticket de monitoreo de inventario (stock vs. histórico de 13 meses).</li>
-      <li><b>03-jul</b> · Primer montaje en Claude; consolidado de 720 entradas; idea de skill.</li>
-      <li><b>07-jul</b> · Revisión con Francisco: memoria del producto, padre/hijo, comprar/transferir.</li>
-      <li><b>10-jul</b> · Solo crítico/alto, columna Estado Proveedor, sustitutos, transferencia total.</li>
-      <li><b>13-jul</b> · Sobrestock en %, documento único de reglas, PDF filtrado, líneas faltantes.</li>
-      <li><b>14-jul</b> · Reporte enviado a compras; se propone columna de tipo de rotación.</li>
-      <li><b>15/16-jul</b> · Formalización como skill; meta de ejecución programada a las 9:30.</li>
-    </ul>
-  </div></details>
-
-  <details class="proj" id="p2"><summary>Skills de Claude / Cowork (capacitación) <span class="badge b-prog">EN CURSO</span></summary><div class="body">
-    <p>Instalación de Claude/Cowork, suscripción corporativa y capacitación de Panchito para usar y probar las skills. David crea las skills; Panchito instala y prueba.</p>
-    <ul class="tl">
-      <li><b>30-jun</b> · Tarea de instalar Cowork y crear la cuenta corporativa.</li>
-      <li><b>03-jul</b> · Instalación y suscripción pro completadas; proyecto creado.</li>
-      <li><b>08-jul</b> · Taller de skills.</li>
-      <li><b>13-jul</b> · Skill del reporte actualizada y reenviada.</li>
-      <li><b>16-jul</b> · Dos skills nuevas entregadas; conectores Microsoft 365/Exa en configuración.</li>
-    </ul>
-  </div></details>
-
-  <details class="proj" id="p3"><summary>Reporte de fechas de llegada (semanal) <span class="badge b-prog">EN PRUEBAS</span></summary><div class="body">
-    <p>Reporte semanal en Word que cruza el documento de compras (fechas de llegada) con el inventario, agrupado por semanas, con alertas de stock correcto y sobrestock.</p>
-    <ul class="tl">
-      <li><b>13-jul</b> · Se acuerda unificar el reporte general con las fechas de compras.</li>
-      <li><b>14-jul</b> · El reporte distingue llegada vs. fabricación.</li>
-      <li><b>15-jul</b> · Formato definido: Word, semanal, hasta fines de agosto.</li>
-      <li><b>16-jul</b> · Skill entregada y probada; pendiente enviar resultado por chat.</li>
-    </ul>
-  </div></details>
-
-  <details class="proj" id="p4"><summary>Reporte de producto hueso <span class="badge b-pend">PENDIENTE DE PRUEBA</span></summary><div class="body">
-    <p>Identificación del inventario inmovilizado (stock sin ventas) que congela liquidez, con capital parado por línea. Panchito debe ejecutar la skill y reportar.</p>
-    <ul class="tl">
-      <li><b>03-jul</b> · Reducir el hueso se define como objetivo estratégico.</li>
-      <li><b>07-jul</b> · Refuerzo de la meta de proteger el flujo de caja.</li>
-      <li><b>16-jul</b> · Skill entregada; queda pendiente probarla.</li>
-    </ul>
-  </div></details>
-
-  <details class="proj" id="p5"><summary>Columna Estado Proveedor + Excel de compras en SharePoint <span class="badge b-prog">EN CURSO</span></summary><div class="body">
-    <p>Columna que refleja las gestiones de compra activas (backorder, fechas) alimentada por el Excel de Mayira, centralizado en SharePoint. David investiga la integración con Cowork.</p>
-    <ul class="tl">
-      <li><b>10-jul</b> · Se acuerdan la columna y el acceso al Excel de compras.</li>
-      <li><b>13-jul</b> · Se añaden backorders y fechas de llegada.</li>
-      <li><b>14-jul</b> · Decisión de usar SharePoint (protección de datos).</li>
-      <li><b>15-jul</b> · Documento subido a SharePoint y compartido con Mayira.</li>
-      <li><b>16-jul</b> · Conectores Microsoft 365/Exa en configuración (login pendiente).</li>
-    </ul>
-  </div></details>
-
-  <details class="proj" id="p6"><summary>Automatización de ventas · Odoo + WhatsApp (con John) <span class="badge b-pend">EN PROPUESTA</span></summary><div class="body">
-    <p>Proyecto macro para automatizar el reporte de visitas de vendedores integrando agentes de IA con WhatsApp, Odoo y PowerBI. John prepara propuesta formal y proof of concept.</p>
-    <ul class="tl">
-      <li><b>30-jun</b> · Se define el ticket de CRM/gestión comercial.</li>
-      <li><b>09-jul</b> · Discovery con John Cuellar; acuerdos de propuesta y canal conjunto.</li>
-      <li><b>15-jul</b> · Se confirma que sigue en fase de propuesta.</li>
-    </ul>
-  </div></details>
-
-  <details class="proj" id="p7"><summary>API REST de Odoo (reunión con sistemas) <span class="badge b-pend">PENDIENTE</span></summary><div class="body">
-    <p>Validar la conexión de agentes de IA a Odoo (API REST) con el equipo de sistemas, en el contexto de la migración v15 → v18. David coordina; Francisco organiza la reunión técnica.</p>
-    <ul class="tl">
-      <li><b>30-jun</b> · Acuerdo de coordinar la sesión técnica y enviar la documentación del API.</li>
-      <li><b>09-jul</b> · Se reconfirma el contexto (migración en ~4 meses); sin avance del API.</li>
-    </ul>
-  </div></details>
-
-  <details class="proj" id="p8"><summary>Sitios web (Ana y Francisco) <span class="badge b-done">HECHO · DESPLIEGUE POSPUESTO</span></summary><div class="body">
-    <p>Sitios generados con IA: el de Ana funcional (WhatsApp, GitHub) y la propuesta para Construgypsum (carpeta website-propuesta/). El lanzamiento espera a que termine la fase de automatización.</p>
-    <ul class="tl">
-      <li><b>07-jul</b> · Demo de ambos sitios; se prioriza la automatización antes del despliegue.</li>
-    </ul>
-  </div></details>
-
-  <details class="proj" id="p9"><summary>Simulación logística de transferencias (Catherine) <span class="badge b-block">BLOQUEADO</span></summary><div class="body">
-    <p>Simulacro sin mover mercadería del proceso de transferencia a Challuabamba (costos, tiempos, viabilidad); pedido directo de Tupa. Panchito da seguimiento.</p>
-    <ul class="tl">
-      <li><b>13-jul</b> · Se acuerda contactar a la coordinadora de logística.</li>
-      <li><b>14-jul</b> · Instrucción de llamar a Catherine y enviarle el reporte como simulacro.</li>
-      <li><b>15-jul</b> · Panchito habló con ella y le envió el reporte.</li>
-      <li><b>16-jul</b> · Sin respuesta aún; presionar y luego consultar costos con RR. HH.</li>
-    </ul>
-  </div></details>
-
-  <details class="proj" id="p10"><summary>Canal de comunicación (WhatsApp a tres vías, bullet points) <span class="badge b-done">HECHO · EN USO</span></summary><div class="body">
-    <p>Chat a tres vías (Panchito, Tupa, David) más grupo de cuatro con John; estándar de reportar en bullet points concisos.</p>
-    <ul class="tl">
-      <li><b>08-jul</b> · Se acuerdan el three-way chat y los bullet points.</li>
-      <li><b>09-jul</b> · David queda en crear el grupo con John.</li>
-      <li><b>14/15-jul</b> · El canal se usa para reportes y se suma el flujo con Mayira.</li>
-    </ul>
-  </div></details>
-
-</div></section>
-
 <footer>
-  Construgypsum × Cascade Clarity · Índice del proyecto · Generado el 16 de julio de 2026 · Material interno y confidencial
+  Construgypsum × Cascade Clarity · Dashboard del proyecto · Actualizado el 16 de julio de 2026 · Material interno y confidencial
 </footer>
 
 <script>
@@ -281,6 +589,13 @@
       if(d){ d.open = true; d.scrollIntoView({behavior:'smooth', block:'center'}); }
     });
   });
+  function arch(which){
+    var hoy = which === 'hoy';
+    document.getElementById('archHoy').style.display = hoy ? '' : 'none';
+    document.getElementById('archFuturo').style.display = hoy ? 'none' : '';
+    document.getElementById('btnHoy').classList.toggle('on', hoy);
+    document.getElementById('btnFut').classList.toggle('on', !hoy);
+  }
 </script>
 </body>
 </html>
