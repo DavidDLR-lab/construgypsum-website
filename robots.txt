@@ -1,5 +1,4 @@
 User-agent: *
-Allow: /
-Disallow: /cotizacion.html
-
-Sitemap: https://www.construgypsum.com/sitemap.xml
+Disallow: /cartera-clientes.html
+Disallow: /analisis-inventario/
+Disallow: /indice.html
