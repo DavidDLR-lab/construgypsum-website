@@ -2,3 +2,4 @@ User-agent: *
 Disallow: /cartera-clientes.html
 Disallow: /analisis-inventario/
 Disallow: /indice.html
+Disallow: /ruta-despacho/
