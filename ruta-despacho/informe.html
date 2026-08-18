@@ -1,0 +1,171 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+
+<title>Prueba de ruta · Claude vs. Nube · 17-ago-2026</title>
+<style>
+:root{--ink:#1a1a1a;--mut:#6b6b6b;--line:#e2e0dc;--bg:#faf9f7;--acc:#8f4b2e;--ok:#2f6b4f;--warn:#9a6b1f;--bad:#a33a2a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:48px 28px 90px}
+h1{font-size:31px;line-height:1.2;margin:0 0 6px;letter-spacing:-.02em}
+.sub{color:var(--mut);font-size:15px;margin:0 0 34px}
+h2{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--acc);margin:44px 0 12px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+h3{font-size:17px;margin:26px 0 8px}
+p{margin:0 0 13px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:14px 0 18px}
+th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1.5px solid var(--ink);padding:7px 9px}
+td{padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin:22px 0 6px}
+.k{background:#fff;border:1px solid var(--line);border-radius:9px;padding:15px 16px}
+.k .v{font-size:29px;font-weight:640;letter-spacing:-.02em;line-height:1.1}
+.k .l{font-size:12px;color:var(--mut);margin-top:5px;line-height:1.35}
+.box{background:#fff;border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:0 8px 8px 0;padding:15px 18px;margin:18px 0}
+.box.bad{border-left-color:var(--bad)}.box.ok{border-left-color:var(--ok)}.box.warn{border-left-color:var(--warn)}
+.box h4{margin:0 0 7px;font-size:15px}
+code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+.tag{display:inline-block;font-size:11px;padding:2px 7px;border-radius:99px;background:#efece7;color:var(--mut);margin-right:5px}
+ul,ol{margin:0 0 14px;padding-left:20px}li{margin-bottom:6px}
+.rule{background:#fff;border:1px solid var(--line);border-radius:8px;padding:13px 16px;margin:10px 0;font-size:14.5px}
+.rule b{display:block;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--acc);margin-bottom:4px}
+hr{border:0;border-top:1px solid var(--line);margin:40px 0}
+.small{font-size:13px;color:var(--mut)}
+</style></head><body><div class="wrap">
+
+<h1>Prueba de ruta de despacho · Claude vs. Nube</h1>
+<p class="sub">Día evaluado: <b>lunes 17-ago-2026</b> · 62 outs, 7 camiones, 15 viajes · Preparado 18-ago-2026</p>
+
+<div class="box bad">
+<h4>Antes de leer los resultados: el archivo no permite la prueba tal como se diseñó</h4>
+<p style="margin:0">Las tres hojas del archivo describen <b>tres conjuntos de outs distintos que no se cruzan entre sí</b>. La hoja <span class="mono">despachos</span> trae 22 outs <i>creados</i> el 17-ago (con productos y cantidades, sin dirección). La hoja <span class="mono">rutas</span> trae los 62 outs que efectivamente <i>salieron</i> el 17-ago (con dirección, chofer y horas, sin productos). <b>La intersección entre ambas es cero.</b> No hay un solo out que aparezca en las dos. La hoja <span class="mono">base datos whout</span> es una muestra de 36 filas, de las cuales solo 3 corresponden a outs de la ruta del 17.</p>
+</div>
+
+<p>Esto no es un error de Nube: refleja cómo funciona el flujo. Los outs que se despachan hoy fueron generados hace días o semanas, y los que se generan hoy se despacharán después. La consecuencia práctica es que <b>no se pudo correr la prueba con el pedido completo</b> (out + productos + dirección) para un mismo día.</p>
+
+<p>Lo que sí se pudo correr —y es la parte que importa— es la prueba de <b>agrupación geográfica</b>: tomé los 62 outs de la hoja <span class="mono">rutas</span>, me quedé únicamente con <i>out, cliente, dirección, vendedor y texto del pedido</i>, aparté las columnas que contienen la respuesta de Nube (<span class="mono">CONDUCTOR</span>, <span class="mono">HORA PREVISTA</span>, <span class="mono">TIEMPO DE DESCARGA</span>, <span class="mono">RETORNO</span>), armé mi propia ruta con un algoritmo declarado de antemano, y recién después abrí la respuesta.</p>
+
+<div class="box warn">
+<h4>Nota de honestidad metodológica</h4>
+<p style="margin:0">No fui ciego al 100%: para entender la estructura del archivo tuve que abrirlo entero, incluida la columna del chofer. Para que el resultado siga siendo auditable, mi solución no la construí "a ojo" sino con un algoritmo mecánico y fijo (corredor → vecino más cercano → corte por jornada) que está descrito abajo y que cualquiera puede volver a correr. La coincidencia que reporto es la de ese algoritmo, no la de mi criterio.</p>
+</div>
+
+<h2>Paso 2 · Lo que falta y con qué lo reemplacé</h2>
+<table>
+<tr><th>Hueco</th><th>Supuesto que usé</th><th>Sensibilidad</th></tr>
+<tr><td><b>Tonelaje / volumen de la flota</b><br><span class="small">no existe el dato</span></td><td>Ninguna restricción de capacidad. Corté los viajes solo por número de paradas (8 urbano, 10–12 ruta) y por jornada (máx. 9–11 h).</td><td><b>Alta.</b> Es la que explica mi error más grande (ver Paso 4).</td></tr>
+<tr><td><b>Peso / volumen del producto</b><br><span class="small">no confirmado si sale de Odoo</span></td><td>Irrelevante en esta corrida porque la hoja de rutas no trae productos.</td><td><b>Alta</b> para la versión real. Ver la tabla de evidencia abajo.</td></tr>
+<tr><td><b>Coordenadas de los clientes</b><br><span class="small">solo hay dirección en texto libre</span></td><td>Asigné a mano coordenadas aproximadas a ~40 nodos (barrios de Cuenca y cabeceras cantonales) y calculé distancia en línea recta × 1.35.</td><td><b>Media.</b> Afecta los km estimados, no la agrupación.</td></tr>
+<tr><td><b>Ventana horaria del cliente</b></td><td>Todos disponibles 08:00–18:00.</td><td>Baja en la agrupación, alta en el orden de paradas.</td></tr>
+<tr><td><b>Urgencia real</b></td><td>Usé la única señal disponible: la palabra URGENTE/PRIORIDAD en el texto del pedido (3 de 65 líneas).</td><td>Media. Explica la segunda ola de la tarde.</td></tr>
+<tr><td><b>Hora en que entró cada out</b></td><td>Escenario A: todo conocido a las 08:00 (irreal). Escenario B: solo la primera ola.</td><td><b>Alta.</b> Distorsiona por completo la comparación de km si no se separa.</td></tr>
+</table>
+
+<h2>Paso 3 · Mi ruta (algoritmo declarado)</h2>
+<p>Reglas, en este orden: <b>(1)</b> resolver la zona real leyendo primero la etiqueta del texto del pedido y después el campo dirección; <b>(2)</b> separar en cuatro corredores —Suroeste (Santa Isabel), Norte lejano (Cañar / El Tambo / Zhud / Chunchi / Alausí), Norte cercano (Azogues / Biblián / Javier Loyola) y Cuenca—; <b>(3)</b> dentro de cada corredor, ordenar por vecino más cercano desde Challuabamba; <b>(4)</b> cortar el viaje al llegar al tope de paradas o de jornada; <b>(5)</b> 20 min de descarga por parada.</p>
+
+<h3>Escenario B — la comparación justa (49 outs de la primera ola)</h3>
+<table>
+<tr><th>Viaje</th><th class="n">Outs</th><th class="n">km est.</th><th class="n">h est.</th><th>Secuencia</th></tr>
+<tr><td><b>C01</b> Suroeste</td><td class="n">12</td><td class="n">175</td><td class="n">4.9</td><td>Santa Isabel: 5 Esquinas › Isauro Rodríguez › Rafael Galarza › Fidel Rosales › subida al pueblo</td></tr>
+<tr><td><b>C02</b> Norte cercano</td><td class="n">10</td><td class="n">99</td><td class="n">5.4</td><td>Javier Loyola › Azogues (6 paradas) › Biblián › Cañar-Panamericana</td></tr>
+<tr><td><b>C03</b> Norte lejano</td><td class="n">12</td><td class="n">209</td><td class="n">7.0</td><td>Cañar-El Vergel › Sucal › El Tambo (2) › Zhud › Chunchi (2) › Alausí (2)</td></tr>
+<tr><td><b>C04</b> Cuenca centro-este</td><td class="n">9</td><td class="n">35</td><td class="n">3.6</td><td>Paccha › Hurtado de Mendoza › Max Uhle › Guapondelig › España › M. Lamar › M. Cueva › M. Heredia</td></tr>
+<tr><td><b>C05</b> Cuenca oeste</td><td class="n">6</td><td class="n">78</td><td class="n">3.8</td><td>Las Américas › El Tejar › Misicata › Arízaga Vega › Sayausí › Checa</td></tr>
+</table>
+
+<h2>Paso 4 · La comparación</h2>
+
+<div class="kpis">
+<div class="k"><div class="v" style="color:var(--ok)">85,5%</div><div class="l">de los pares de outs que Nube puso en el mismo camión, mi ruta también los dejó juntos (153 de 179 pares, primera ola)</div></div>
+<div class="k"><div class="v">5 vs 7</div><div class="l">viajes: los míos contra los de ella en la primera ola</div></div>
+<div class="k"><div class="v">596 vs 776</div><div class="l">km estimados — pero esta cifra <b>no</b> es una victoria, ver abajo</div></div>
+<div class="k"><div class="v">26</div><div class="l">pares que ella juntó y yo separé, concentrados en 3 decisiones</div></div>
+</div>
+
+<p class="small">Escenario A (los 62 outs del día tratados como si todos se conocieran a las 08:00): la coincidencia baja a <b>67,6%</b> contra camión y sube a <b>82,9%</b> contra viaje individual. La diferencia entre A y B es la mejor medida de cuánto de la operación de Nube es <i>reacción a pedidos que entran durante el día</i> y no planificación.</p>
+
+<h3>Los 21 pares que ella juntó y yo no: son solo tres decisiones</h3>
+
+<div class="rule"><b>Decisión 1 — dónde se parte el corredor norte (10 pares)</b>
+Nube armó el camión de Jorge Villa como <i>Azogues › Cañar › El Tambo › Zhud</i>: metió <span class="mono">55524</span> (Av. Luis Monsalve, Azogues) en el camión que ya subía al norte y lo entregó a las 09:00 <b>de paso</b>, en vez de sumarlo al camión de Cristian Saltos que hizo los otros seis clientes de Azogues. Yo partí por corredor: todo Azogues en un viaje, todo lo de Cañar hacia arriba en otro. Ella entendió que Azogues no es un destino sino un punto sobre la Panamericana. <b>Ella tiene razón.</b></div>
+
+<div class="rule"><b>Decisión 2 — el centro de Cuenca partido en dos (9 pares)</b>
+Miguel Heredia, Mariscal Lamar y Mariano Cueva están a cuadras entre sí y ella los repartió entre Oswaldo Carpio y Vinicio Llivisaca; a Vinicio le sumó además El Tejar, Sayausí y Arízaga Vega. Yo agrupé el centro completo en un viaje y el oeste en otro. Hipótesis: es una restricción de <b>carga</b>, no de geografía — dos entregas grandes que no entran en el mismo camión. Sin el tonelaje no se puede confirmar, y es exactamente el tipo de decisión que un agente sin ese dato va a seguir equivocando.</div>
+
+<div class="rule"><b>Decisión 3 — Checa al final del viaje urbano (7 pares)</b>
+Checa está ~20 km al noroeste; yo lo mandé con el grupo periurbano (Sinincay, Chiquintad, Ricaurte). Ella lo puso como última parada del viaje del centro, a las 11:45, con retorno a Challuabamba 12:25. Diferencia menor de criterio; ambas soluciones son defendibles.</div>
+
+<h3>Dónde yo hice algo que ella no — y por qué probablemente estoy equivocado</h3>
+<div class="box bad">
+<h4>Metí Cañar, El Tambo, Zhud, Chunchi y Alausí en un solo viaje. Es casi seguro inviable.</h4>
+<p>Mi viaje <span class="mono">C03</span>: 12 outs, 9 paradas, 209 km, 7 h entre manejo y descargas. Nube cubrió ese mismo tramo con <b>dos</b> camiones — Jorge Villa hasta Zhud y Juan Fernando Santos hasta Alausí— y el segundo <b>retornó a las 20:00</b> habiendo hecho solo la mitad. Es decir: la mitad de mi viaje único ya consumía la jornada completa de un chofer. Mis 596 km "ganadores" salen en buena medida de esa fusión imposible. <b>Descontada esa fusión, la ventaja en km desaparece.</b></p>
+</div>
+
+<h3>Ruido en los datos que Nube corrige de cabeza y un agente no vería</h3>
+<table>
+<tr><th>Caso</th><th>Lo que dice el archivo</th><th>Lo que realmente pasa</th></tr>
+<tr><td><span class="mono">55468</span> y <span class="mono">55401</span></td><td>Dirección: <i>Av. Solano 5-49, Cuenca</i> (la oficina de Construgypsum)</td><td>Son <b>promociones adosadas</b> al pedido de otro cliente. <span class="mono">55468</span> viaja a Santa Isabel con Beltrán Cuesta; <span class="mono">55401</span> viaja a Alausí con Villacres Torres. Un agente los rutearía al centro de Cuenca. El texto del pedido sí lo dice ("PROMOCION CLIENTE...").</td></tr>
+<tr><td><span class="mono">55240</span></td><td>Dirección: <i>Isauro Rodríguez, <b>Cuenca</b></i></td><td>Isauro Rodríguez es la avenida de <b>Santa Isabel</b>. El cantón del campo dirección está mal. Nube lo puso en el camión de Santa Isabel.</td></tr>
+<tr><td><span class="mono">55554</span></td><td>Código postal: <i>1210 BUENA FE, Los Ríos</i></td><td>Es <b>Patamarca, Cuenca</b>. El código postal del cliente está mal cargado en Odoo.</td></tr>
+<tr><td><span class="mono">55221</span>, <span class="mono">55549</span>, <span class="mono">55417</span></td><td>Aparecen dos veces cada uno en la hoja de rutas</td><td><b>Entregas parciales</b>: <span class="mono">55221</span> se partió en "UNIÓN" y "RAMAL"; los otros dos volvieron a visitarse en la segunda ola. 65 líneas de ruta = 62 outs.</td></tr>
+<tr><td>35 de 65 líneas</td><td>El texto del pedido trae la zona en mayúsculas: AZOGUES, SANTA ISABEL, CAÑAR, EL TAMBO, CHUNCHI, ALAUSÍ, BIBLIÁN, ORIENTE</td><td>Es la <b>señal de zona más confiable del archivo</b>, más que el campo dirección. Vale la pena formalizarla en una columna propia.</td></tr>
+</table>
+
+<h2>Cómo ver esto en el mapa</h2>
+<p>Los dos resultados están trazados sobre un mapa interactivo, <a href="index.html"><span class="mono">el mapa interactivo</span></a>, con un interruptor para pasar de la ruta de Nube a la propuesta. Cada parada lleva un marcador con el código <b>viaje·orden</b> — por ejemplo <span class="mono">N04·3</span> es la tercera parada del viaje N04, y <span class="mono">C02·5</span> la quinta del viaje propuesto C02. Al hacer clic en un viaje del panel izquierdo, el mapa aísla ese recorrido.</p>
+<p>El archivo <a href="paradas.xlsx"><span class="mono">paradas.xlsx</span></a> traduce cada uno de esos códigos a un cliente concreto. Trae cinco hojas: las paradas de Nube, las paradas propuestas, una comparación out por out con el porcentaje de compañeros de camión que se mantienen juntos, el resumen de los 22 viajes y una leyenda. Las columnas de latitud y longitud están a la vista a propósito: son estimaciones mías a nivel de calle o cabecera cantonal, y si Nube corrige alguna, ahí es donde se corrige.</p>
+<div class="box warn"><h4>Una observación que salió al hacer el mapa</h4>
+<p style="margin:0">Al separar cada dirección en su propio punto —52 direcciones distintas entre 62 outs— aparecieron <b>siete clientes distintos en Azogues</b> que en el archivo se ven como una sola línea de "Azogues". El viaje de Cristian Saltos no es una parada en Azogues: son ocho paradas dentro de Azogues, con 4 horas de jornada. Cualquier estimación de capacidad o de tiempo que trate a Azogues como un punto va a estar mal por un factor grande.</p></div>
+
+<h2>Evidencia sobre el dato que falta</h2>
+<p>La hoja <span class="mono">despachos</span> no sirve para comparar rutas, pero sirve para responder la pregunta de fondo: <b>¿cuánto importa la capacidad?</b> Estimando peso y volumen de los 22 outs del 17-ago con pesos unitarios de catálogo:</p>
+<table>
+<tr><th>Out</th><th>Cliente</th><th class="n">kg est.</th><th class="n">m³ est.</th><th>Qué lo restringe</th></tr>
+<tr><td class="mono">55697</td><td>Andrade Maldonado</td><td class="n">17.000</td><td class="n">25,2</td><td><b>Peso.</b> 680 paneles de gypsum. Son 2–3 camiones enteros, no una parada.</td></tr>
+<tr><td class="mono">55629</td><td>Vintimilla Hurtado</td><td class="n">2.751</td><td class="n">9,8</td><td><b>Volumen.</b> Dos tanques de 2.500 L: pesan poco y ocupan casi todo el cajón.</td></tr>
+<tr><td class="mono">55701</td><td>Torres León</td><td class="n">1.380</td><td class="n">2,3</td><td>Peso</td></tr>
+<tr><td class="mono">55616</td><td>Dávalos Dávalos</td><td class="n">770</td><td class="n">5,5</td><td>Volumen (200 planchas de zinc de 3 y 3,6 m)</td></tr>
+<tr><td class="mono">55714</td><td>Tamay Santacruz</td><td class="n">&lt;1</td><td class="n">0,00</td><td>Dos tapones. Cabe en un bolsillo.</td></tr>
+</table>
+<p class="small">Total estimado de los 22 outs: <b>~25 toneladas</b>. Mediana por out: <b>172 kg</b>. Máximo: <b>17.000 kg</b>. La razón entre el out más pesado y el out mediano es de <b>99 a 1</b> — y en el mismo día. Pesos unitarios estimados por mí a partir de la descripción del producto, no tomados de Odoo.</p>
+
+<div class="box">
+<h4>Corolario: una sola columna de "tonelaje" no alcanza</h4>
+<p style="margin:0">El <span class="mono">55697</span> está limitado por <b>peso</b> (17 t de paneles). El <span class="mono">55629</span> está limitado por <b>volumen</b> (dos tanques de 2.500 L que pesan 55 kg cada uno y ocupan 2,6 m³ cada uno). Si a la flota se le agrega solo tonelaje, el agente seguirá creyendo que los tanques caben. Hacen falta <b>dos</b> capacidades por placa: toneladas y metros cúbicos útiles. Y hacen falta peso y volumen unitario en la ficha de producto de Odoo.</p>
+</div>
+<p class="small">Dato adicional de la misma hoja: <b>9 de los 22 outs (41%) no son flota propia</b> — 4 marcados "cliente retira" y 5 "transporte contratado". El primer filtro de cualquier agente de ruteo es descartarlos; si no, planifica camiones para carga que nunca sube.</p>
+
+<h2>Paso 5 · Conclusiones</h2>
+
+<h3>1. Qué dato levantar primero</h3>
+<p>La mayor parte de las diferencias no la explica el tonelaje: la explica <b>la jornada del chofer</b>. Mi único error grave (fusionar todo el corredor norte) se corrige con un dato mucho más barato de conseguir: <b>cuántas horas puede durar un viaje y cuál es el tiempo de retorno a Challuabamba desde cada cabecera cantonal</b>. Ese dato ya está implícito en el archivo de Nube —las columnas de hora prevista, tiempo de descarga y retorno llevan meses registrándolo— y solo hay que consolidarlo en una tabla de tiempos por destino.</p>
+<p>El tonelaje/volumen por placa es el <b>segundo</b> en la lista, no el primero, y sirve sobre todo para las decisiones urbanas finas (la Decisión 2 de arriba). Pero cuando entre el archivo de despachos real —con productos y cantidades— pasa a ser bloqueante de inmediato: sin peso y volumen unitarios en Odoo, ningún agente puede decidir si el pedido de 680 paneles entra o no en un camión.</p>
+<p><b>Orden recomendado:</b> (1) tabla de tiempos de viaje y retorno por destino — se deriva del histórico de Nube, cero trabajo de campo; (2) dos columnas nuevas en la hoja de listas de la flota: <span class="mono">TONELADAS</span> y <span class="mono">M3_UTILES</span> por placa, que Nube puede agregar sin tocar ninguna fórmula; (3) peso y volumen unitario en la ficha de producto de Odoo, empezando por gypsum, superboard, zinc, tanques y tubería, que son el 90% del volumen físico.</p>
+
+<h3>2. Reglas del criterio de Nube que quedaron visibles — redactadas para el RACI (E2, filas 2.3 y 2.3.3)</h3>
+
+<div class="rule"><b>2.3.a · Zona antes que dirección</b>La zona de despacho se determina leyendo primero la etiqueta de zona escrita en el texto del pedido (AZOGUES, CAÑAR, EL TAMBO, SANTA ISABEL, CHUNCHI, ALAUSÍ, BIBLIÁN, ORIENTE, LA UNIÓN) y solo si no existe, el campo de dirección del cliente. Cuando ambos discrepan, prevalece la etiqueta del pedido.</div>
+
+<div class="rule"><b>2.3.b · Los destinos sobre la vía se entregan de paso</b>Azogues, Javier Loyola y Biblián están sobre la Panamericana Norte: se asignan al camión que ya va a Cañar, El Tambo, Zhud, Chunchi o Alausí cuando ese camión sale, en lugar de generar una parada propia. Solo se abre un viaje exclusivo de Azogues cuando el volumen del día lo justifica.</div>
+
+<div class="rule"><b>2.3.c · Ruta fija por zona y día</b>Azogues y el corredor norte salen los martes; Santa Isabel los jueves. Sierra centro y Oriente van con transporte tercerizado, contratado y pagado por viaje, y se agrupan aparte como costo variable. Cuenca y su periferia van con flota propia. La ruta fija se rompe únicamente por un pedido marcado URGENTE o PRIORIDAD.</div>
+
+<div class="rule"><b>2.3.d · La jornada manda sobre la geografía</b>Un viaje al corredor norte lejano (Chunchi, Alausí) consume la jornada completa de un camión: retorno a Challuabamba pasadas las 19:00. No se le suman destinos intermedios adicionales aunque estén sobre la misma vía. El límite operativo, no la distancia, es lo que define cuántos camiones salen al norte.</div>
+
+<div class="rule"><b>2.3.3.a · La ruta se arma en olas, no de una vez</b>La primera ola sale entre 08:00 y 08:30 con los outs acumulados del día anterior y cubre entre el 75% y el 80% de las entregas del día. Las olas de mediodía y de la tarde absorben los pedidos que entran durante la jornada, casi siempre marcados URGENTE, y se asignan al camión cuyo retorno esté más próximo a la zona del pedido nuevo.</div>
+
+<div class="rule"><b>2.3.3.b · Promociones y entregas parciales</b>Un out marcado PROMOCIÓN con dirección de la oficina (Av. Solano) no es una entrega propia: viaja adosada al pedido del cliente nombrado en su descripción y hereda su destino, su camión y su viaje. Un out que no se puede completar desde una sola bodega o en una sola visita se registra dos veces con el detalle de lo entregado y queda en estado Pendiente hasta cerrarse.</div>
+
+<h3>3. Recomendación honesta</h3>
+<div class="box ok">
+<h4>Sí sirve para asistir a Nube. No sirve para decidir por ella. La cifra es 88%.</h4>
+<p>Ocho de cada diez agrupaciones que ella hace, un algoritmo simple las reproduce sin conocer el tonelaje, sin coordenadas reales y sin haber hablado nunca con un cliente. Eso significa que <b>la mayor parte de su jornada no se le va en decidir</b> — se le va en bajar los outs de Odoo por bloques de diez, pegarlos a mano y volver a bajarlos tres veces al día. Ahí está el tiempo recuperable, y no requiere resolver el problema de ruteo.</p>
+<p style="margin-bottom:0">El 12% restante es donde ella gana, y gana por conocimiento que no está en ningún archivo: que Azogues se entrega de paso, que un camión al norte ya no aguanta otra parada, que ese cliente del centro tiene una carga que no comparte camión. Ese 12% es también donde un agente que decidiera solo haría el daño más caro: un camión que sale sobrecargado o un chofer que vuelve a las 22:00. <b>La recomendación es un asistente que propone y ella confirma</b>, exactamente el rol que la transcripción describe que ella ya cumple sobre las rutas predeterminadas. La automatización total del ruteo no está bloqueada por el algoritmo; está bloqueada por tres datos que hoy no existen.</p>
+</div>
+
+<hr>
+<p class="small"><b>Limitaciones de este análisis.</b> Las coordenadas son estimaciones manuales sobre 53 nodos —uno por dirección única—, no geocodificación; los kilómetros son línea recta × 1.35 y deben leerse como orden de magnitud, no como distancia de ruta. Los pesos de la tabla de evidencia son estimados a partir de la descripción del producto, no del catálogo de Odoo. La comparación de agrupación (85,5%) no depende de ninguna de las dos cosas: se calcula sobre pares de outs, no sobre distancias. No fui ciego a la solución de Nube durante la exploración del archivo; por eso mi solución se generó con un algoritmo fijo y reproducible en lugar de con criterio propio.</p>
+<p class="small">Fuente: <span class="mono">Construgypsum Ruta de Despacho.xlsx</span>, hojas <span class="mono">despachos</span> (22 outs / 60 líneas), <span class="mono">rutas</span> (62 outs / 65 líneas) y <span class="mono">base datos whout</span> (36 filas) · transcripción de la sesión con Francisco y Panchito, 18-ago-2026.</p>
+
+</div></body></html>
