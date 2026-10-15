@@ -864,6 +864,10 @@ textarea { min-height: 120px; resize: vertical; }
 
 /* ---------- Impresión ---------- */
 @media print {
-  .topbar, .site-header, .wa-float, .to-top, .cta-band, .site-footer, .drawer { display: none !important; }
-  body { font-size: 12px; }
+  .wa-float, .to-top, .drawer, .nav-toggle, .header-search, .brand-marquee { display: none !important; }
+  .site-header { position: static; box-shadow: none; }
+  .reveal, .reveal-stagger > * { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .section { padding: 40px 0; }
+  .hero, .section--navy, .page-hero, .site-footer, .cta-band, .step { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .brand-tile, .card, .solution-card, .segment, .step, .testimonial { break-inside: avoid; }
 }
