@@ -346,6 +346,10 @@
       entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
     $$('.reveal, .reveal-stagger').forEach(function (el) { io.observe(el); });
+    /* Antes de imprimir o tras 2.5 s sin interacción, mostrar todo (PDF, lectores, capturas) */
+    var revealAll = function () { $$('.reveal, .reveal-stagger').forEach(function (el) { el.classList.add('in'); }); };
+    window.addEventListener('beforeprint', revealAll);
+    setTimeout(revealAll, 2500);
 
     /* Contadores */
     var cio = new IntersectionObserver(function (entries) {
