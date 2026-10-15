@@ -1,0 +1,38 @@
+LOGOS DE MARCA
+==============
+
+Coloca aquí el logotipo de cada marca con el nombre exacto de archivo indicado
+(PNG con fondo transparente o SVG). El sitio lo detecta automáticamente y
+reemplaza el marcador tipográfico. Si el archivo no existe, se muestra el nombre.
+
+Tamaño sugerido: 600 × 300 px (PNG) o SVG. Fondo transparente.
+
+  # 1  proteja.png   (Proteja · Etex)
+  # 2  superboard.png   (Superboard · Etex)
+  # 3  gyplac.png   (Gyplac · Etex)
+  # 4  romeral.png   (Romeral · Etex)
+  # 5  gypsum-vinil.png   (Gypsum Vinil · Cielo raso modular)
+  # 6  construsec.png   (Construsec · Perfilería metálica)
+  # 7  plastiluz.png   (Plastiluz · Plastigama Wavin)
+  # 8  desague.png   (Desagüe · Plastigama Wavin)
+  # 9  roscable.png   (Roscable · Plastigama Wavin)
+  #10  cuatritubo.png   (Cuatritubo · Plastigama Wavin)
+  #11  termofusion.png   (Termofusión · Plastigama Wavin)
+  #12  flex.png   (Flex · Plastigama Wavin)
+  #13  tanques.png   (Tanques · Plastigama Wavin)
+  #14  canales.png   (Canales · Plastigama Wavin)
+  #15  conduit.png   (Conduit · Plastigama Wavin)
+  #16  cpvc-fire.png   (CPVC Fire · Plastigama Wavin)
+  #17  quickstream.png   (Quickstream · Plastigama Wavin)
+  #18  plastidor.png   (Plastidor · Plastidor)
+  #19  fv.png   (FV · Franz Viegener)
+  #20  tuberia-presion-ec.png   (Tubería Presión EC · Plastigama Wavin)
+  #21  tuberia-presion-uz.png   (Tubería Presión UZ · Plastigama Wavin)
+  #22  novafort.png   (Novafort · Plastigama Wavin)
+  #23  drenaje.png   (Drenaje · Plastigama Wavin)
+  #24  aspersion.png   (Aspersión · Plastigama Wavin)
+  #25  acesco.png   (Acesco · Acesco)
+  #26  intaco.png   (Intaco · Intaco)
+  #27  yale.png   (Yale · ASSA ABLOY)
+  #28  saint-gobain.png   (Saint-Gobain · Norton · Saint-Gobain)
+  #29  ledex.png   (Ledex · Ledex)
